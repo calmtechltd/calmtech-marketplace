@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "plugins": [
+    {
+      "name": "calm-craft",
+      "repository": "calmtechltd/calm-craft",
+      "ref": "main",
+      "commit": "e32601a6a8291b66f4e6f426e718f5043a986b8d",
+      "version": "0.2.0"
+    },
+    {
+      "name": "calm-connect",
+      "repository": "calmtechltd/calm-connect",
+      "ref": "main",
+      "commit": "fa641706b0ccc228e650f30096f6b009eebd4178",
+      "version": "1.0.0"
+    }
+  ]
+}

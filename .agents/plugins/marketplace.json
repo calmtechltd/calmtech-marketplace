@@ -1,0 +1,32 @@
+{
+  "name": "calmtech",
+  "interface": {
+    "displayName": "Calmtech"
+  },
+  "plugins": [
+    {
+      "name": "calm-craft",
+      "source": {
+        "source": "local",
+        "path": "./plugins/calm-craft"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "calm-connect",
+      "source": {
+        "source": "local",
+        "path": "./plugins/calm-connect"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_USE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

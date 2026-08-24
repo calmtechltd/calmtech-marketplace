@@ -1,0 +1,42 @@
+{
+  "plugins": [
+    {
+      "name": "calm-craft",
+      "repository": "calmtechltd/calm-craft",
+      "ref": "main",
+      "category": "Developer Tools",
+      "authentication": "ON_INSTALL",
+      "include": [
+        ".claude-plugin",
+        ".codex-plugin",
+        "plugin.json",
+        "skills",
+        "references",
+        "assets",
+        "CHANGELOG.md",
+        "LICENSE",
+        "README.md",
+        "SECURITY.md",
+        "SUPPORT.md"
+      ]
+    },
+    {
+      "name": "calm-connect",
+      "repository": "calmtechltd/calm-connect",
+      "ref": "main",
+      "category": "Productivity",
+      "authentication": "ON_USE",
+      "include": [
+        ".claude-plugin",
+        ".codex-plugin",
+        ".mcp.json",
+        "plugin.json",
+        "mcp.json",
+        "CHANGELOG.md",
+        "LICENSE",
+        "README.md",
+        "SECURITY.md"
+      ]
+    }
+  ]
+}

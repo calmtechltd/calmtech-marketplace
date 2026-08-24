@@ -1,0 +1,55 @@
+name: Sync marketplace
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+  repository_dispatch:
+    types: [plugin-released]
+  push:
+    branches: [main]
+    paths:
+      - plugins.json
+      - scripts/sync.mjs
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: calmtech-marketplace-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - run: npm run sync
+      - run: npm run validate
+      - name: Open and merge the generated update
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [[ -z "$(git status --porcelain)" ]]; then
+            echo "Marketplace is current."
+            exit 0
+          fi
+
+          branch="automation/marketplace-${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add -A plugins plugins.lock.json .agents/plugins/marketplace.json .claude-plugin/marketplace.json .cursor-plugin/marketplace.json
+          git commit -m "Sync plugin marketplace"
+          git push origin "$branch"
+          gh pr create \
+            --base main \
+            --head "$branch" \
+            --title "Sync plugin marketplace" \
+            --body "Generated from the public plugin repositories and exact commits recorded in plugins.lock.json."
+          gh pr merge --auto --squash --delete-branch "$branch"
