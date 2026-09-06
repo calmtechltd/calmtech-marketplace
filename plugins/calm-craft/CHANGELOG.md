@@ -2,7 +2,18 @@
 
 CalmCraft follows [Semantic Versioning](https://semver.org/). Release notes describe user-visible CLI, spec-contract, security, and compatibility changes.
 
-## 0.2.0 — pending
+## 0.3.0 — pending
+
+Includes the previously unreleased 0.2.1 skill changes.
+
+- Centralize test value and verification ownership: reuse current evidence, assign narrow worker checks, and reserve full suites for explicit checks requests, repository requirements, and release preparation.
+- Keep all 31 skills while removing repeated checklists, trigger lists, and question ceremony. Add explicit code-slop cleanup and align focused browser verification with task and repository policy.
+- Keep CodeRabbit explicitly invoked, account for every inline severity, retain unverified findings, and require published fixes and current thread evidence before resolution.
+- Separate local readiness from authorized draft promotion; preserve PR ticket relationships and inspect the actual branch commit range.
+- Accept one unguarded flow fallback, correct spec status rollups, and preserve stable IDs and generated-diagram authority.
+- Require branch-cleanup PR merge evidence to reach trunk, preserve unknown Graphite ownership, and evaluate worktree blockers separately. No-fetch scans no longer write Git objects or refresh indexes.
+
+## 0.2.0 — 2026-08-25
 
 - Add `spec-storyboard-journey`, authoritative storyboard evidence on flow states, scene inspection in Feature view, a shared UX journey reference, and packaged spec/flow templates for reconstructing a repository's portable spec layer.
 - Add `calmcraft generate`, which writes the estate as one self-contained HTML file that opens from the filesystem with no server, port, or token.
