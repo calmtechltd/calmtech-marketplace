@@ -6,7 +6,7 @@ const root = resolve(import.meta.dirname, "..");
 const { plugins } = JSON.parse(await readFile(join(root, "plugins.json"), "utf8"));
 assert(Array.isArray(plugins) && plugins.length > 0, "plugins.json has no plugins.");
 const names = new Set();
-const fields = ["name", "repository", "ref", "description", "category", "authentication"];
+const fields = ["name", "repository", "ref", "description", "category", "authentication", "interface"];
 for (const plugin of plugins) {
   assert(Object.keys(plugin).every((key) => fields.includes(key)), "Only repository catalog fields are supported.");
   assert(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(plugin.name), "Invalid plugin name.");
@@ -17,15 +17,24 @@ for (const plugin of plugins) {
   assert(typeof plugin.description === "string" && plugin.description.length > 0, "Missing description.");
   assert(typeof plugin.category === "string" && plugin.category.length > 0, "Missing category.");
   assert(["ON_INSTALL", "ON_USE"].includes(plugin.authentication), "Invalid authentication policy.");
+  assert(plugin.interface && typeof plugin.interface === "object" && !Array.isArray(plugin.interface), "Missing listing interface.");
+  const interfaceFields = ["displayName", "shortDescription", "developerName", "brandColor"];
+  assert(Object.keys(plugin.interface).every((key) => interfaceFields.includes(key)), "Unsupported listing interface field.");
+  for (const key of ["displayName", "shortDescription", "developerName"]) {
+    assert(typeof plugin.interface[key] === "string" && plugin.interface[key].trim().length > 0, `Missing interface.${key}.`);
+  }
+  assert(/^#[0-9A-Fa-f]{6}$/u.test(plugin.interface.brandColor), "Invalid listing brand color.");
 }
 
 const catalogs = {
   ".agents/plugins/marketplace.json": {
     name: "calmtech",
     interface: { displayName: "Calmtech" },
-    plugins: plugins.map(({ name, repository, ref, authentication, category }) => ({
+    plugins: plugins.map(({ name, repository, ref, authentication, category, description, interface: listing }) => ({
       name,
       source: { source: "url", url: `https://github.com/${repository}.git`, ref },
+      description,
+      interface: listing,
       policy: { installation: "AVAILABLE", authentication },
       category,
     })),

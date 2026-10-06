@@ -6,7 +6,13 @@
       "ref": "main",
       "description": "Portable workflows for specs, implementation planning, code review and conventions.",
       "category": "Developer Tools",
-      "authentication": "ON_INSTALL"
+      "authentication": "ON_INSTALL",
+      "interface": {
+        "displayName": "Calm Craft",
+        "shortDescription": "Specs, plans, and code review",
+        "developerName": "Calmtech",
+        "brandColor": "#00BC72"
+      }
     },
     {
       "name": "calm-connect",
@@ -14,7 +20,13 @@
       "ref": "main",
       "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
       "category": "Productivity",
-      "authentication": "ON_USE"
+      "authentication": "ON_USE",
+      "interface": {
+        "displayName": "Calm Connect",
+        "shortDescription": "Your Calm Compliance companion",
+        "developerName": "Calmtech",
+        "brandColor": "#00BC72"
+      }
     }
   ]
 }
