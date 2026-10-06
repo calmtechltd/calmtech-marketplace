@@ -1,5 +1,5 @@
 import { lstat, readFile, readdir } from "node:fs/promises";
-import { join, resolve } from "node:path";
+import { isAbsolute, join, relative, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 
@@ -80,6 +80,19 @@ for (const [index, plugin] of registry.plugins.entries()) {
 
   assert(claude.plugins[index].source === `./plugins/${plugin.name}`, `Claude source path mismatch for ${plugin.name}.`);
   assert(cursor.plugins[index].source === `plugins/${plugin.name}`, `Cursor source path mismatch for ${plugin.name}.`);
+  for (const listing of [codexPlugin.interface, portable.extensions?.["com.openai"]?.interface]) {
+    if (!listing) continue;
+    for (const field of ["logo", "logoDark", "composerIcon", "composerIconDark"]) {
+      const asset = listing[field];
+      if (asset === undefined) continue;
+      assert(typeof asset === "string" && asset.length > 0 && !isAbsolute(asset), `Invalid ${field} for ${plugin.name}.`);
+      const assetPath = resolve(pluginRoot, asset);
+      const fromRoot = relative(pluginRoot, assetPath);
+      assert(!fromRoot.startsWith("..") && !isAbsolute(fromRoot), `${plugin.name} ${field} escapes the package.`);
+      const metadata = await lstat(assetPath);
+      assert(metadata.isFile() && metadata.size > 0, `${plugin.name} ${field} asset is missing or empty.`);
+    }
+  }
   await rejectSymlinks(pluginRoot, `plugins/${plugin.name}`);
 }
 

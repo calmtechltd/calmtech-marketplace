@@ -32,6 +32,7 @@
         ".mcp.json",
         "plugin.json",
         "mcp.json",
+        "assets",
         "CHANGELOG.md",
         "LICENSE",
         "README.md",
