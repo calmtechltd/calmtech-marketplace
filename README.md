@@ -44,7 +44,11 @@ Cursor supports root `plugin.json` Agent Plugins. This repository does not gener
 
 ## Automatic updates
 
-The **Refresh plugin bundles** GitHub Action checks the configured refs in `plugins.json` on an hourly schedule. It also runs when the registry or generator changes on `main`, and can be started from Actions → Refresh plugin bundles → Run workflow. An optional `repository_dispatch` event of type `plugin-updated` can trigger a check sooner; the source repositories need no changes for scheduled checks.
+The **Refresh plugin bundles** GitHub Action checks the configured refs in `plugins.json` once a day at 06:17 UTC. Scheduled runs make one commit-lookup request per source repository and skip bundle generation, tests and publication when the commits match the lock. It also runs when the registry or generator changes on `main`, and can be started from Actions → Refresh plugin bundles → Run workflow.
+
+The marketplace is public and uses the standard `ubuntu-latest` runner, whose execution is free for public repositories. The daily schedule avoids unnecessary work and PRs even though these runs do not use paid Actions minutes. [GitHub runner billing](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories).
+
+The workflow also accepts `repository_dispatch` events of type `plugin-updated` for immediate source notifications. A sender in another repository needs a GitHub App or a token with access to this marketplace: its built-in `GITHUB_TOKEN` is limited to its own repository. No sender is configured; the daily check requires no source-repository changes or cross-repository secret. [GitHub token scope](https://docs.github.com/en/actions/concepts/security/github_token#about-the-github_token).
 
 When the source commits change, the action fetches the declared package files, validates the bundles and branding, and opens a refresh PR. It records each source repository, ref, commit, version, file hash and executable flag in `plugins.lock.json`. The PR links to the source commits. A newer successful proposal closes older open refresh PRs created by this automation, keeping their branches and history. Existing proposals are reused; deliberately closed proposals are not reopened.
 

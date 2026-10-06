@@ -2,7 +2,7 @@ name: Refresh plugin bundles
 
 on:
   schedule:
-    - cron: '17 * * * *'
+    - cron: '17 6 * * *'
   workflow_dispatch:
   repository_dispatch:
     types: [plugin-updated]
@@ -36,11 +36,22 @@ jobs:
         with:
           node-version: 24
           package-manager-cache: false
+      - name: Check source commits before doing bundle work
+        id: sources
+        if: github.event_name == 'schedule' || github.event_name == 'repository_dispatch'
+        run: node scripts/check-sources.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
       - run: npm test
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       - run: npm run refresh
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       - run: npm run validate
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       - run: git diff --check
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
       - name: Publish a refresh PR when bundles changed
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: node scripts/publish-refresh.mjs
         env:
           GH_TOKEN: ${{ github.token }}
