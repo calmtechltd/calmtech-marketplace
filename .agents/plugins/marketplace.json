@@ -7,8 +7,9 @@
     {
       "name": "calm-craft",
       "source": {
-        "source": "local",
-        "path": "./plugins/calm-craft"
+        "source": "url",
+        "url": "https://github.com/calmtechltd/calm-craft.git",
+        "ref": "main"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -19,8 +20,9 @@
     {
       "name": "calm-connect",
       "source": {
-        "source": "local",
-        "path": "./plugins/calm-connect"
+        "source": "url",
+        "url": "https://github.com/calmtechltd/calm-connect.git",
+        "ref": "main"
       },
       "policy": {
         "installation": "AVAILABLE",

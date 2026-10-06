@@ -1,6 +1,0 @@
-interface:
-  display_name: "CodeRabbit and Codex Review Triage"
-  short_description: "Triage CodeRabbit and Codex review feedback."
-
-policy:
-  allow_implicit_invocation: false

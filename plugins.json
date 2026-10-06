@@ -4,40 +4,17 @@
       "name": "calm-craft",
       "repository": "calmtechltd/calm-craft",
       "ref": "main",
+      "description": "Portable workflows for specs, implementation planning, code review and conventions.",
       "category": "Developer Tools",
-      "authentication": "ON_INSTALL",
-      "include": [
-        ".claude-plugin",
-        ".codex-plugin",
-        "plugin.json",
-        "skills",
-        "references",
-        "assets",
-        "CHANGELOG.md",
-        "LICENSE",
-        "README.md",
-        "SECURITY.md",
-        "SUPPORT.md"
-      ]
+      "authentication": "ON_INSTALL"
     },
     {
       "name": "calm-connect",
       "repository": "calmtechltd/calm-connect",
       "ref": "main",
+      "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
       "category": "Productivity",
-      "authentication": "ON_USE",
-      "include": [
-        ".claude-plugin",
-        ".codex-plugin",
-        ".mcp.json",
-        "plugin.json",
-        "mcp.json",
-        "assets",
-        "CHANGELOG.md",
-        "LICENSE",
-        "README.md",
-        "SECURITY.md"
-      ]
+      "authentication": "ON_USE"
     }
   ]
 }
