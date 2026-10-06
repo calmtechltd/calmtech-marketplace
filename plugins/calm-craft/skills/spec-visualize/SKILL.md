@@ -7,7 +7,7 @@ description: Open the local CalmCraft visualizer for a spec estate or branch rev
 
 Use the packaged `calmcraft` command as the visual front door to the spec estate. It writes a single self-contained HTML file outside the repository and opens it. Nothing is served, nothing keeps running, and nothing is added to the user's working tree.
 
-Format authority: [`references/spec-format.md`](../../references/spec-format.md). The CLI reads optional repository settings from `calmcraft.json`.
+Format authority: [`references/spec-format.md`](../../references/spec-format.md). Shared repository settings come from `.engineering/config.yaml`, with field-level legacy `calmcraft.json` compatibility; see [engineering configuration](../../references/engineering-config.md).
 
 Use `spec-gap-sweep` instead when the user wants an actionable maintenance report rather than an interactive view.
 
@@ -20,14 +20,14 @@ Use the current checkout when the user names no source. Otherwise use the exact 
 ### 2. Generate and open
 
 ```sh
-npx --yes @calmcraft/cli@0.2.0 generate
-npx --yes @calmcraft/cli@0.2.0 generate /path/to/repository
-npx --yes @calmcraft/cli@0.2.0 generate --diff --base origin/main
+npx --yes @calmcraft/cli@0.4.0 generate
+npx --yes @calmcraft/cli@0.4.0 generate /path/to/repository
+npx --yes @calmcraft/cli@0.4.0 generate --diff --base origin/main
 ```
 
 The file lands in a temporary directory and opens in the default browser. Pass `--out <file>` only when the user wants to keep or share it, and put it where they ask — never inside their repository unless they say so, because it is several megabytes and easy to commit by accident.
 
-`--diff` computes Branch Review now and writes it into the file. `--base <ref>` selects the comparison base; without it CalmCraft uses `calmcraft.json`, `origin/HEAD`, then common main-branch names. `--provenance` chooses which layers are visible when the file first opens.
+`--diff` computes Branch Review now and writes it into the file. `--base <ref>` selects the comparison base; without it use the shared review base, the recorded default-branch candidate, `origin/HEAD`, then common main-branch names. Conflicting explicit YAML/JSON settings require repair. `--provenance` chooses which layers are visible when the file first opens.
 
 Use `--no-open` when the environment cannot launch a browser; report the path instead.
 
@@ -40,21 +40,6 @@ Do not background an orphan process, upload repository data, start a public list
 ### 4. Hand back
 
 Tell the user which repository is open, whether the file is Atlas or Branch Review, and which base was requested. Report the file path. Do not invent a session URL.
-
-## Quality gate
-
-- [ ] The exact requested checkout or worktree is open.
-- [ ] Branch Review uses the requested base or reports that a base is still needed.
-- [ ] No repository content was uploaded and no server was started.
-- [ ] No repository file was generated or changed unless the user asked for `--out` there.
-- [ ] The CLI exited after writing the file.
-
-## Anti-patterns
-
-- Generating a static dashboard in the selected repository.
-- Copying private specs into a fixture, report, or hosted service.
-- Treating staged, unstaged, or untracked work as committed branch history.
-- Starting a server or sharing a tokenized local URL.
 
 ## Related skills
 
