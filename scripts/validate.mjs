@@ -28,6 +28,8 @@ for (const [index, plugin] of registry.plugins.entries()) {
     installation: "AVAILABLE", authentication: plugin.authentication,
   });
   assert.equal(codex.plugins[index].category, plugin.category);
+  assert.equal(codex.plugins[index].description, plugin.description);
+  assert.deepEqual(codex.plugins[index].interface, plugin.interface);
   assert.equal(claude.plugins[index].description, plugin.description);
   assert.equal(claude.plugins[index].category, plugin.category);
   for (const catalog of [codex, claude]) {

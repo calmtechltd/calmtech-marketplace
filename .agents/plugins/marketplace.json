@@ -11,6 +11,13 @@
         "url": "https://github.com/calmtechltd/calm-craft.git",
         "ref": "main"
       },
+      "description": "Portable workflows for specs, implementation planning, code review and conventions.",
+      "interface": {
+        "displayName": "Calm Craft",
+        "shortDescription": "Specs, plans, and code review",
+        "developerName": "Calmtech",
+        "brandColor": "#00BC72"
+      },
       "policy": {
         "installation": "AVAILABLE",
         "authentication": "ON_INSTALL"
@@ -23,6 +30,13 @@
         "source": "url",
         "url": "https://github.com/calmtechltd/calm-connect.git",
         "ref": "main"
+      },
+      "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
+      "interface": {
+        "displayName": "Calm Connect",
+        "shortDescription": "Your Calm Compliance companion",
+        "developerName": "Calmtech",
+        "brandColor": "#00BC72"
       },
       "policy": {
         "installation": "AVAILABLE",

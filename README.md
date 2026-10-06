@@ -19,7 +19,9 @@ codex plugin add calm-craft@calmtech
 codex plugin add calm-connect@calmtech
 ```
 
-The Codex catalog uses Git-backed `url` sources pointing at the root of each plugin repository. Install through the desktop plugin manager or CLI. [Source format](https://developers.openai.com/plugins/build/plugins#marketplace-metadata).
+The Codex catalog uses Git-backed `url` sources pointing at the root of each plugin repository. Each catalog entry supplies its display name, short description, publisher and brand color because Codex does not load the remote plugin manifest before installation. Install through the desktop plugin manager or CLI. [Source format](https://developers.openai.com/plugins/build/plugins#marketplace-metadata).
+
+Codex currently discards asset paths for Git-backed entries before installation, so these entries show generic icons in the marketplace browser. The branded icon is loaded from the plugin repository after installation. Adding an icon path or a remote image URL to the catalog does not bypass this limitation.
 
 ### Claude Code
 
@@ -46,7 +48,15 @@ Cursor supports root `plugin.json` Agent Plugins. Its documented multi-plugin ma
 
 Both catalogs track each plugin's `main` branch. Refresh or update plugins through the agent host's plugin manager. The plugin repository owns its version and release contents. A new plugin release does not require copying files or opening a snapshot-sync PR in this repository.
 
-Change `ref` in `plugins.json` if the catalog should select a release tag instead of `main`.
+To refresh the catalog's listing metadata in Codex:
+
+```sh
+codex plugin marketplace upgrade calmtech
+```
+
+Refresh or update the installed plugins separately through the plugin manager to pick up new plugin versions and assets.
+
+Change `ref` in `plugins.json` if the catalog should select a release tag instead of `main`. Update the entry's `interface` fields when its display name, subtitle, publisher or brand color changes.
 
 ## Maintain the catalog
 
