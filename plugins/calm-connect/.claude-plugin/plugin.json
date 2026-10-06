@@ -1,17 +1,19 @@
 {
   "name": "calm-connect",
-  "version": "1.0.0",
-  "description": "Connect your AI assistant to Calm using the access you already have.",
+  "version": "1.0.1",
+  "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
   "author": {
     "name": "Calm Tech Ltd",
     "url": "https://github.com/calmtechltd"
   },
-  "homepage": "https://app.calmcompliance.com",
+  "homepage": "https://www.calmcompliance.com",
   "repository": "https://github.com/calmtechltd/calm-connect",
   "license": "MIT",
   "keywords": [
     "calm",
     "compliance",
+    "premises",
+    "maintenance",
     "issues",
     "requests",
     "tickets"

@@ -1,11 +1,13 @@
 # Calmtech Marketplace
 
+<img src="./calm-mark.png" alt="Calmtech" width="96" />
+
 The Calmtech Marketplace publishes open plugins for Codex, Claude Code, and Cursor from one repository.
 
 It currently contains:
 
 - [Calm Craft](https://github.com/calmtechltd/calm-craft): skills for specs, implementation planning, code review, and enforceable conventions.
-- [Calm Connect](https://github.com/calmtechltd/calm-connect): a secure connection to Calm for questions about sites, issues, requests, and tickets.
+- [Calm Connect](https://github.com/calmtechltd/calm-connect): the AI companion to [Calm Compliance](https://www.calmcompliance.com) for questions about premises, work, compliance records, and people, with optional updates to issues, requests, and work orders.
 
 ## Install
 

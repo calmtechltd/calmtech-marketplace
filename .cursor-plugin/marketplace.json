@@ -11,7 +11,7 @@
       "name": "calm-craft",
       "source": "plugins/calm-craft",
       "description": "Specs as the source of truth, a chunked delivery loop, and decided-and-enforced code conventions — as portable agent skills.",
-      "version": "0.4.0",
+      "version": "0.4.1",
       "author": {
         "name": "Calm Tech Ltd",
         "url": "https://github.com/calmtechltd"
@@ -29,8 +29,8 @@
     {
       "name": "calm-connect",
       "source": "plugins/calm-connect",
-      "description": "Connect your AI assistant to Calm using the access you already have.",
-      "version": "1.0.0",
+      "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
+      "version": "1.0.1",
       "author": {
         "name": "Calm Tech Ltd",
         "url": "https://github.com/calmtechltd"
@@ -39,6 +39,8 @@
       "tags": [
         "calm",
         "compliance",
+        "premises",
+        "maintenance",
         "issues",
         "requests",
         "tickets"
