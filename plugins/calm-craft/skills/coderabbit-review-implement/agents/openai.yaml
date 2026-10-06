@@ -1,6 +1,0 @@
-interface:
-  display_name: "CodeRabbit and Codex Review Implement"
-  short_description: "Apply triaged CodeRabbit and Codex fixes locally."
-
-policy:
-  allow_implicit_invocation: false

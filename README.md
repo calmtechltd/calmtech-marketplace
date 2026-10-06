@@ -2,12 +2,12 @@
 
 <img src="./calm-mark.png" alt="Calmtech" width="96" />
 
-The Calmtech Marketplace publishes open plugins for Codex, Claude Code, and Cursor from one repository.
+A catalog pointing to Calmtech's plugin repositories. Each agent host downloads and manages the installed plugin in its tooling cache.
 
-It currently contains:
-
-- [Calm Craft](https://github.com/calmtechltd/calm-craft): skills for specs, implementation planning, code review, and enforceable conventions.
+- [Calm Craft](https://github.com/calmtechltd/calm-craft): specs, implementation planning, reviews and conventions.
 - [Calm Connect](https://github.com/calmtechltd/calm-connect): the AI companion to [Calm Compliance](https://www.calmcompliance.com) for questions about premises, work, compliance records, and people, with optional updates to issues, requests, and work orders.
+
+Plugin skills, references, assets and versions live in those repositories. Application repositories keep their project-specific skills, specs, conventions and engineering settings.
 
 ## Install
 
@@ -19,6 +19,8 @@ codex plugin add calm-craft@calmtech
 codex plugin add calm-connect@calmtech
 ```
 
+The Codex catalog uses Git-backed `url` sources pointing at the root of each plugin repository. Install through the desktop plugin manager or CLI. [Source format](https://developers.openai.com/plugins/build/plugins#marketplace-metadata).
+
 ### Claude Code
 
 ```sh
@@ -27,45 +29,33 @@ claude plugin install calm-craft@calmtech
 claude plugin install calm-connect@calmtech
 ```
 
+The Claude catalog uses `github` sources. [Source format](https://code.claude.com/docs/en/plugin-marketplaces#choose-a-plugin-source).
+
 ### Cursor
 
-Add `calmtechltd/calmtech-marketplace` as your Team or Enterprise marketplace repository, then install either plugin from Cursor's plugin settings.
+Import the plugin repositories directly in Cursor's plugin settings:
 
-The repository includes `.cursor-plugin/marketplace.json`, so it can also be submitted as a multi-plugin repository to Cursor's public marketplace.
+- `https://github.com/calmtechltd/calm-craft`
+- `https://github.com/calmtechltd/calm-connect`
 
-## How updates work
+For a team marketplace, use Dashboard → Plugins & MCPs → Add to Marketplace to add the source repositories, then choose the existing access audience. For a personal installation, use Customize to add a plugin from its repository. Choose user scope to make it available across projects.
 
-[`plugins.json`](plugins.json) is the allowlist and source of truth. Each entry names a public repository, a Git ref, and the files that Calmtech publishes.
+Cursor supports root `plugin.json` Agent Plugins. Its documented multi-plugin marketplace manifest resolves directories within the imported repository; this catalog does not supply that manifest. An existing Cursor import of `calmtech-marketplace` must be replaced with the plugin source repository imports. [Cursor plugin documentation](https://prod.cursor.com/docs/plugins), [marketplace manifest reference](https://prod.cursor.com/docs/reference/plugins#cursor-multi-plugin-repositories).
 
-The sync workflow runs every hour and can also run on demand or in response to a `plugin-released` repository event. It checks out each configured ref, rejects symlinks and mismatched manifests, and generates:
+## Updates
 
-- `.agents/plugins/marketplace.json` for Codex
-- `.claude-plugin/marketplace.json` for Claude Code
-- `.cursor-plugin/marketplace.json` for Cursor
-- local plugin snapshots under `plugins/`
-- `plugins.lock.json` with the exact source commit and plugin version
+Both catalogs track each plugin's `main` branch. Refresh or update plugins through the agent host's plugin manager. The plugin repository owns its version and release contents. A new plugin release does not require copying files or opening a snapshot-sync PR in this repository.
 
-The workflow validates the complete result, opens a bot pull request, and enables auto-merge. The pull request records each marketplace update without requiring someone to copy files between repositories.
+Change `ref` in `plugins.json` if the catalog should select a release tag instead of `main`.
 
-`calm-craft` currently tracks `main` because that repository has not published a GitHub release. Change its `ref` to a release tag when Calm Craft adopts tagged plugin releases.
+## Maintain the catalog
 
-## Add another plugin
-
-1. Publish a public Agent Plugin v1 repository with matching `.codex-plugin/plugin.json` and `.claude-plugin/plugin.json` manifests.
-2. Add one explicit entry to `plugins.json`, including the paths that belong in the published package.
-3. Run the sync against sibling local checkouts and validate the result:
+Edit the repository references and catalog metadata in [`plugins.json`](plugins.json), then run:
 
 ```sh
-CALMTECH_SOURCE_ROOT=.. npm run sync
+npm run generate
 npm run validate
+git diff --check
 ```
 
-4. Open a pull request containing the registry and generated changes.
-
-The marketplace does not discover repositories from GitHub topics or naming patterns. A new plugin always starts with a reviewed allowlist entry.
-
-## Security
-
-The generator copies files without running source-repository code. It rejects symlinks, records commit SHAs, and checks that portable, Codex, and Claude manifest identities and versions match.
-
-Report vulnerabilities through [GitHub private vulnerability reporting](https://github.com/calmtechltd/calmtech-marketplace/security/advisories/new).
+Generation is local and does not fetch or execute plugin source code. CI checks the repository-reference catalogs and rejects embedded package outputs. Additions and source changes go through a pull request.

@@ -6,6 +6,6 @@ Use [GitHub private vulnerability reporting](https://github.com/calmtechltd/calm
 
 ## Publication boundary
 
-The marketplace reads only public repositories listed in `plugins.json`. The generator copies an allowlist of files, rejects symlinks, validates plugin identities and versions, and records the exact source commit in `plugins.lock.json`.
+The marketplace contains references to public repositories explicitly listed in `plugins.json`. The generator writes catalog metadata locally without fetching repositories, copying plugin contents, installing dependencies or executing plugin code.
 
-The sync workflow does not install dependencies or execute code from plugin repositories.
+Agent hosts fetch the selected plugin repository and manage its installed cache. Each source is explicit, installations remain optional, and plugin source changes are reviewed in the owning repository. This catalog tracks the configured branch or tag; it does not pin a separate packaged snapshot.

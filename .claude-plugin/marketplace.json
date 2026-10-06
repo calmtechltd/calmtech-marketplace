@@ -3,51 +3,26 @@
   "owner": {
     "name": "Calmtech"
   },
-  "description": "Plugins from Calmtech for better delivery and connected compliance work.",
+  "description": "Repository-backed Calmtech plugins for delivery workflows and connected compliance work.",
   "plugins": [
     {
       "name": "calm-craft",
-      "source": "./plugins/calm-craft",
-      "description": "Specs as the source of truth, a chunked delivery loop, and decided-and-enforced code conventions — as portable agent skills.",
-      "version": "0.4.1",
-      "author": {
-        "name": "Calm Tech Ltd",
-        "url": "https://github.com/calmtechltd"
+      "source": {
+        "source": "github",
+        "repo": "calmtechltd/calm-craft",
+        "ref": "main"
       },
-      "homepage": "https://github.com/calmtechltd/calm-craft",
-      "repository": "https://github.com/calmtechltd/calm-craft",
-      "license": "MIT",
-      "keywords": [
-        "specs",
-        "conventions",
-        "code-review",
-        "implementation-plan",
-        "testing",
-        "linting"
-      ],
+      "description": "Portable workflows for specs, implementation planning, code review and conventions.",
       "category": "Developer Tools"
     },
     {
       "name": "calm-connect",
-      "source": "./plugins/calm-connect",
-      "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
-      "version": "1.0.1",
-      "author": {
-        "name": "Calm Tech Ltd",
-        "url": "https://github.com/calmtechltd"
+      "source": {
+        "source": "github",
+        "repo": "calmtechltd/calm-connect",
+        "ref": "main"
       },
-      "homepage": "https://www.calmcompliance.com",
-      "repository": "https://github.com/calmtechltd/calm-connect",
-      "license": "MIT",
-      "keywords": [
-        "calm",
-        "compliance",
-        "premises",
-        "maintenance",
-        "issues",
-        "requests",
-        "tickets"
-      ],
+      "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
       "category": "Productivity"
     }
   ]
