@@ -1,20 +1,16 @@
 ---
 name: run-implementation-plan-all
-description: Finish the current implementation plan — one chunk per pass, then the next, across turns until the plan is done. Use when the user says "run them all", "finish the plan", "run-implementation-plan-all", or starts /goal without naming a single chunk.
+description: Run the selected implementation plan in a host goal, calling run-implementation-plan for one chunk per pass until the selected delivery scope is complete. Use when the user explicitly invokes "run-implementation-plan-all" or asks to run or finish the plan in a host goal.
 ---
 
-# Run an Implementation Plan — All
+# Run Implementation Plan — All
 
-Finish the plan. This is the same loop as [`run-implementation-plan`](../run-implementation-plan/SKILL.md). Follow that skill in full — the queue, the twelve card steps, the definition of done, and the host continuation.
+Run [run-implementation-plan](../run-implementation-plan/SKILL.md) in a host goal.
 
-Host `/goal` starts this loop. The interval is next card, not a clock.
+Use this wrapper when the user explicitly invokes it or requests a host goal. For an ordinary plan execution request, follow the runner in the current session for the assigned scope.
 
-Per-card verification stays cheap: targeted tests, lint/format on touched files, path-scoped types when the tool accepts files. After the last card, run the close-out in `run-implementation-plan` — whole-programme types, knip, lint, and the test suite — and loop until green. Do not run that expensive pass after every card.
+1. Start or continue a goal whose objective names the selected plan and delivery scope.
+2. On each pass, follow the runner in full for exactly one selected chunk. Keep the plan's progress across passes and honour changes to the user's assignment.
+3. Complete the goal when every selected chunk satisfies its existing **Done when**. Follow the runner's dependency checks and blocker handling.
 
-**Not this skill:** writing a plan (`author-implementation-plan`). A named chunk with **only** stops after that card, still via `run-implementation-plan`.
-
-## Related skills
-
-- `run-implementation-plan` — the loop
-- `write-tests` — whether a chunk test should exist
-- `author-implementation-plan` — writes the plan
+The runner supplies chunk selection, implementation, verification and completion rules.
