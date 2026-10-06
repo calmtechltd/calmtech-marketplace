@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "generate": "node scripts/generate.mjs",
-    "validate": "node scripts/validate.mjs"
+    "validate": "node scripts/validate.mjs",
+    "refresh": "node scripts/generate.mjs --refresh",
+    "test": "node --test scripts/*.test.mjs"
   },
   "engines": {
     "node": ">=20"

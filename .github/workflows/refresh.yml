@@ -1,0 +1,57 @@
+name: Refresh plugin bundles
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [plugin-updated]
+  push:
+    branches: [main]
+    paths:
+      - plugins.json
+      - scripts/**
+      - .github/workflows/refresh.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: refresh-plugin-bundles
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+      - name: Check source commits before doing bundle work
+        id: sources
+        if: github.event_name == 'schedule' || github.event_name == 'repository_dispatch'
+        run: node scripts/check-sources.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - run: npm test
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+      - run: npm run refresh
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+      - run: npm run validate
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+      - run: git diff --check
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+      - name: Publish a refresh PR when bundles changed
+        if: steps.sources.outputs.changed == 'true' || github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        run: node scripts/publish-refresh.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}

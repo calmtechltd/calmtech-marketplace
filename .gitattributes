@@ -1,0 +1,4 @@
+plugins/** linguist-generated=true
+plugins.lock.json linguist-generated=true
+.agents/plugins/marketplace.json linguist-generated=true
+.claude-plugin/marketplace.json linguist-generated=true

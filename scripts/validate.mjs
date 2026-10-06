@@ -1,47 +1,42 @@
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { readdir } from "node:fs/promises";
 import { join, resolve } from "node:path";
+import { promisify } from "node:util";
+import { catalogs, inventory, readJson, validatePackage, validateRegistry } from "./bundles.mjs";
 
 const root = resolve(import.meta.dirname, "..");
-const read = async (path) => JSON.parse(await readFile(join(root, path), "utf8"));
-const registry = await read("plugins.json");
-const codex = await read(".agents/plugins/marketplace.json");
-const claude = await read(".claude-plugin/marketplace.json");
-assert(Array.isArray(registry.plugins) && registry.plugins.length > 0, "Missing plugin registry.");
-assert.equal(codex.name, "calmtech");
-assert.equal(claude.name, "calmtech");
-assert.equal(claude.owner.name, "Calmtech");
-const names = registry.plugins.map(({ name }) => name);
-assert.equal(new Set(names).size, names.length, "Duplicate plugin names.");
-for (const catalog of [codex, claude]) {
-  assert.deepEqual(catalog.plugins.map(({ name }) => name), names);
-}
-for (const [index, plugin] of registry.plugins.entries()) {
-  assert(!("include" in plugin), "Plugin contents must remain in their source repositories.");
-  assert.deepEqual(codex.plugins[index].source, {
-    source: "url", url: `https://github.com/${plugin.repository}.git`, ref: plugin.ref,
+// core.filemode=false identifies checkouts whose filesystem cannot preserve Git modes.
+let checkModes = process.platform !== "win32";
+if (checkModes) {
+  const config = await promisify(execFile)("git", ["config", "--bool", "core.filemode"], { cwd: root }).catch(error => {
+    if (error.code !== 1 && error.code !== 128) throw error;
+    return { stdout: "true" };
   });
-  assert.deepEqual(claude.plugins[index].source, {
-    source: "github", repo: plugin.repository, ref: plugin.ref,
-  });
-  assert.deepEqual(codex.plugins[index].policy, {
-    installation: "AVAILABLE", authentication: plugin.authentication,
-  });
-  assert.equal(codex.plugins[index].category, plugin.category);
-  assert.equal(codex.plugins[index].description, plugin.description);
-  assert.deepEqual(codex.plugins[index].interface, plugin.interface);
-  assert.equal(claude.plugins[index].description, plugin.description);
-  assert.equal(claude.plugins[index].category, plugin.category);
-  for (const catalog of [codex, claude]) {
-    assert(!("version" in catalog.plugins[index]), "The plugin repository owns its version.");
-  }
+  checkModes = config.stdout.trim() !== "false";
 }
-for (const path of ["plugins", "plugins.lock.json", ".cursor-plugin/marketplace.json"]) {
-  let exists = true;
-  try { await access(join(root, path)); } catch (error) {
-    if (error.code !== "ENOENT") throw error;
-    exists = false;
-  }
-  assert(!exists, `Retired embedded-package output remains: ${path}`);
+const comparable = files => checkModes ? files : files.map(({ path, sha256 }) => ({ path, sha256 }));
+const plugins = validateRegistry(await readJson(join(root, "plugins.json")));
+const lock = await readJson(join(root, "plugins.lock.json"));
+assert.equal(lock.version, 1);
+assert.deepEqual(lock.plugins.map(({ name }) => name), plugins.map(({ name }) => name));
+assert.deepEqual((await readdir(join(root, "plugins"))).sort(), plugins.map(({ name }) => name).sort());
+const manifests = [];
+for (const [index, plugin] of plugins.entries()) {
+  const record = lock.plugins[index];
+  assert.equal(record.repository, plugin.repository);
+  assert.equal(record.ref, plugin.ref);
+  assert(/^[0-9a-f]{40}$/u.test(record.commit), "Invalid locked source commit.");
+  const pluginRoot = join(root, "plugins", plugin.name);
+  const files = await inventory(pluginRoot);
+  assert(files.every(({ path }) => plugin.include.some((included) => path === included || path.startsWith(`${included}/`))), "Bundle contains undeclared files.");
+  assert(record.files.every(({ executable }) => typeof executable === "boolean"), "Invalid locked executable flag.");
+  assert.deepEqual(comparable(files), comparable(record.files), `Bundle content or modes changed for ${plugin.name}. Regenerate from its source repository.`);
+  const manifest = await validatePackage(pluginRoot, plugin);
+  assert.equal(manifest.version, record.version);
+  manifests.push(manifest);
 }
-process.stdout.write(`Validated ${names.length} repository-backed plugin entries.\n`);
+for (const [path, expected] of Object.entries(catalogs(plugins, manifests))) {
+  assert.deepEqual(await readJson(join(root, path)), expected, `Generated catalog differs: ${path}`);
+}
+process.stdout.write(`Validated ${plugins.length} source-locked plugin bundles and their branding.\n`);

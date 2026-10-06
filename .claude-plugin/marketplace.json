@@ -3,26 +3,20 @@
   "owner": {
     "name": "Calmtech"
   },
-  "description": "Repository-backed Calmtech plugins for delivery workflows and connected compliance work.",
+  "description": "Plugins from Calmtech for delivery workflows and connected compliance work.",
   "plugins": [
     {
       "name": "calm-craft",
-      "source": {
-        "source": "github",
-        "repo": "calmtechltd/calm-craft",
-        "ref": "main"
-      },
-      "description": "Portable workflows for specs, implementation planning, code review and conventions.",
+      "source": "./plugins/calm-craft",
+      "description": "Specs as the source of truth, a chunked delivery loop, and decided-and-enforced code conventions — as portable agent skills.",
+      "version": "0.4.3",
       "category": "Developer Tools"
     },
     {
       "name": "calm-connect",
-      "source": {
-        "source": "github",
-        "repo": "calmtechltd/calm-connect",
-        "ref": "main"
-      },
+      "source": "./plugins/calm-connect",
       "description": "The AI companion to Calm Compliance: explore your sites, premises, work, compliance records, and people using your existing access.",
+      "version": "1.0.1",
       "category": "Productivity"
     }
   ]

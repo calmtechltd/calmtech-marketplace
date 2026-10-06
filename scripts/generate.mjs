@@ -1,63 +1,79 @@
 import assert from "node:assert/strict";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { cp, lstat, mkdir, mkdtemp, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
+import { promisify } from "node:util";
+import { catalogs, inventory, json, readJson, safeRelativePath, validatePackage, validateRegistry } from "./bundles.mjs";
 
+const run = promisify(execFile);
 const root = resolve(import.meta.dirname, "..");
-const { plugins } = JSON.parse(await readFile(join(root, "plugins.json"), "utf8"));
-assert(Array.isArray(plugins) && plugins.length > 0, "plugins.json has no plugins.");
-const names = new Set();
-const fields = ["name", "repository", "ref", "description", "category", "authentication", "interface"];
-for (const plugin of plugins) {
-  assert(Object.keys(plugin).every((key) => fields.includes(key)), "Only repository catalog fields are supported.");
-  assert(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(plugin.name), "Invalid plugin name.");
-  assert(!names.has(plugin.name), `Duplicate plugin: ${plugin.name}`);
-  names.add(plugin.name);
-  assert(/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/u.test(plugin.repository), "Invalid repository.");
-  assert(typeof plugin.ref === "string" && /^[A-Za-z0-9][A-Za-z0-9._/-]*$/u.test(plugin.ref) && !plugin.ref.includes(".."), "Invalid Git ref.");
-  assert(typeof plugin.description === "string" && plugin.description.length > 0, "Missing description.");
-  assert(typeof plugin.category === "string" && plugin.category.length > 0, "Missing category.");
-  assert(["ON_INSTALL", "ON_USE"].includes(plugin.authentication), "Invalid authentication policy.");
-  assert(plugin.interface && typeof plugin.interface === "object" && !Array.isArray(plugin.interface), "Missing listing interface.");
-  const interfaceFields = ["displayName", "shortDescription", "developerName", "brandColor"];
-  assert(Object.keys(plugin.interface).every((key) => interfaceFields.includes(key)), "Unsupported listing interface field.");
-  for (const key of ["displayName", "shortDescription", "developerName"]) {
-    assert(typeof plugin.interface[key] === "string" && plugin.interface[key].trim().length > 0, `Missing interface.${key}.`);
+const args = process.argv.slice(2);
+assert(args.length === 0 || (args.length === 1 && args[0] === "--refresh"), "Usage: generate.mjs [--refresh]");
+const refresh = args.includes("--refresh");
+const plugins = validateRegistry(await readJson(join(root, "plugins.json")));
+const locked = refresh ? null : await readJson(join(root, "plugins.lock.json"));
+if (locked) {
+  assert.equal(locked.version, 1);
+  assert.deepEqual(locked.plugins.map(({ name }) => name), plugins.map(({ name }) => name));
+}
+const temporary = await mkdtemp(join(root, ".calmtech-bundles-"));
+const output = join(temporary, "output");
+const manifests = [];
+const records = [];
+const git = async (args) => (await run("git", args, { maxBuffer: 8 * 1024 * 1024 })).stdout.trim();
+try {
+  for (const [index, plugin] of plugins.entries()) {
+    const previous = locked?.plugins[index];
+    if (previous) {
+      assert.equal(previous.repository, plugin.repository, "Repository changed; use npm run refresh.");
+      assert.equal(previous.ref, plugin.ref, "Ref changed; use npm run refresh.");
+      assert(/^[0-9a-f]{40}$/u.test(previous.commit), "Invalid locked source commit.");
+    }
+    const source = join(temporary, "sources", plugin.name);
+    await mkdir(source, { recursive: true });
+    await git(["init", "--quiet", source]);
+    const sourceUrl = process.env.CALMTECH_SOURCE_ROOT
+      ? join(resolve(process.env.CALMTECH_SOURCE_ROOT), plugin.name)
+      : `https://github.com/${plugin.repository}.git`;
+    await git(["-C", source, "fetch", "--quiet", "--depth=1", "--no-tags", sourceUrl, previous?.commit ?? plugin.ref]);
+    await git(["-C", source, "checkout", "--quiet", "--detach", "FETCH_HEAD"]);
+    const commit = await git(["-C", source, "rev-parse", "HEAD"]);
+    assert(/^[0-9a-f]{40}$/u.test(commit), "Invalid resolved source commit.");
+    // Git records executable intent even when the host filesystem cannot represent it.
+    const executableModes = new Map((await git(["-C", source, "ls-tree", "-r", "-z", "HEAD"])).split("\0").filter(Boolean).map(entry => {
+      const separator = entry.indexOf("\t");
+      return [entry.slice(separator + 1), entry.startsWith("100755 ")];
+    }));
+    const destination = join(output, "plugins", plugin.name);
+    await mkdir(destination, { recursive: true });
+    for (const included of plugin.include) {
+      const path = safeRelativePath(included);
+      // Reject symlinks in every include path component before copying.
+      for (const [index] of path.split("/").entries()) {
+        const parent = join(source, ...path.split("/").slice(0, index + 1));
+        assert(!(await lstat(parent)).isSymbolicLink(), `Symlinks are not published: ${parent}`);
+      }
+      await inventory(join(source, path));
+      await cp(join(source, path), join(destination, path), { recursive: true, force: false, errorOnExist: true });
+    }
+    const manifest = await validatePackage(destination, plugin);
+    manifests.push(manifest);
+    const record = { name: plugin.name, repository: plugin.repository, ref: plugin.ref, commit, version: manifest.version, files: await inventory(destination, executableModes) };
+    if (previous) assert.deepEqual(record, previous, `Locked bundle changed for ${plugin.name}; use npm run refresh for intentional changes.`);
+    records.push(record);
   }
-  assert(/^#[0-9A-Fa-f]{6}$/u.test(plugin.interface.brandColor), "Invalid listing brand color.");
+  const outputs = { ...catalogs(plugins, manifests), "plugins.lock.json": { version: 1, plugins: records } };
+  for (const [path, value] of Object.entries(outputs)) {
+    await mkdir(dirname(join(output, path)), { recursive: true });
+    await writeFile(join(output, path), json(value));
+  }
+  // Publish only after every source and package has passed validation.
+  for (const path of ["plugins", ...Object.keys(outputs)]) {
+    await rm(join(root, path), { recursive: true, force: true });
+    await mkdir(dirname(join(root, path)), { recursive: true });
+    await rename(join(output, path), join(root, path));
+  }
+  process.stdout.write(`Generated ${records.map(({ name, version, commit }) => `${name} ${version} (${commit.slice(0, 7)})`).join(", ")}.\n`);
+} finally {
+  await rm(temporary, { recursive: true, force: true });
 }
-
-const catalogs = {
-  ".agents/plugins/marketplace.json": {
-    name: "calmtech",
-    interface: { displayName: "Calmtech" },
-    plugins: plugins.map(({ name, repository, ref, authentication, category, description, interface: listing }) => ({
-      name,
-      source: { source: "url", url: `https://github.com/${repository}.git`, ref },
-      description,
-      interface: listing,
-      policy: { installation: "AVAILABLE", authentication },
-      category,
-    })),
-  },
-  ".claude-plugin/marketplace.json": {
-    name: "calmtech",
-    owner: { name: "Calmtech" },
-    description: "Repository-backed Calmtech plugins for delivery workflows and connected compliance work.",
-    plugins: plugins.map(({ name, repository, ref, description, category }) => ({
-      name,
-      source: { source: "github", repo: repository, ref },
-      description,
-      category,
-    })),
-  },
-};
-for (const [path, catalog] of Object.entries(catalogs)) {
-  const destination = join(root, path);
-  await mkdir(dirname(destination), { recursive: true });
-  await writeFile(destination, `${JSON.stringify(catalog, null, 2)}\n`);
-}
-// Retire outputs of the former package-copying generator.
-await rm(join(root, "plugins"), { recursive: true, force: true });
-await rm(join(root, "plugins.lock.json"), { force: true });
-await rm(join(root, ".cursor-plugin"), { recursive: true, force: true });
-process.stdout.write(`Generated repository references for ${plugins.length} plugins.\n`);
