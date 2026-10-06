@@ -5,8 +5,8 @@
       "name": "calm-craft",
       "repository": "calmtechltd/calm-craft",
       "ref": "main",
-      "commit": "67d895c5a343ecce44b44f15970c021076aa0dd6",
-      "version": "0.3.1"
+      "commit": "d522f1401c92fdb35b75333e32aa5e850365ef1a",
+      "version": "0.4.0"
     },
     {
       "name": "calm-connect",
