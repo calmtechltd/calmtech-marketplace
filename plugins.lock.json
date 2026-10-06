@@ -1,0 +1,663 @@
+{
+  "version": 1,
+  "plugins": [
+    {
+      "name": "calm-craft",
+      "repository": "calmtechltd/calm-craft",
+      "ref": "main",
+      "commit": "ad5bb59750d4a094428aee1441f89a48d40a88e9",
+      "version": "0.4.3",
+      "files": [
+        {
+          "path": ".claude-plugin/plugin.json",
+          "sha256": "7d2263bb99752b0b364399a54e65e2b9703df05b37fb582c91a37fd71400f07f",
+          "executable": false
+        },
+        {
+          "path": ".codex-plugin/plugin.json",
+          "sha256": "a493c2f1f53adc8ddcf87db4ded242e4325a5b9dff5a4e7a00ebad223fdda662",
+          "executable": false
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "72228d6f88aaed070b50e4f13fd87a40c1baf213345735c0686f10a0808c1d84",
+          "executable": false
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "21b35a664b061ff08a4c388de6c961564578f34d996a5e74ac18107d01e308cf",
+          "executable": false
+        },
+        {
+          "path": "README.md",
+          "sha256": "bec815eb6d8bce94add7b59157c7e249167fa40ee3e27efcee85d070e5af95bc",
+          "executable": false
+        },
+        {
+          "path": "SECURITY.md",
+          "sha256": "1892595042c491321026841f40f1c491a07704d9bcda848f984b7a36fc3b063a",
+          "executable": false
+        },
+        {
+          "path": "assets/branding/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "assets/engineering/config.schema.json",
+          "sha256": "f0fab66e0147e76d2196f0eb7c2ae023a65161606dc2749db6699a18e3ffc306",
+          "executable": false
+        },
+        {
+          "path": "assets/engineering/minimal.example.yaml",
+          "sha256": "9465c3d1adf4213d3f32ca7574e28b8214705b02c120ca145d82c8c93a660e6b",
+          "executable": false
+        },
+        {
+          "path": "assets/engineering/quality.example.yaml",
+          "sha256": "25026d36e004225b59146616e670dcafe165b96afcd41f05f842eb189ee9d9d3",
+          "executable": false
+        },
+        {
+          "path": "assets/specs/_flow-template.yaml",
+          "sha256": "1636f16774a29c12cf73266d56e81f074c79410d052706026c78ec255edb66fd",
+          "executable": false
+        },
+        {
+          "path": "assets/specs/_template.md",
+          "sha256": "1d87d5c840ecba289070ecc5c60d49cff38d0565537c7d16a9cbf2643485c027",
+          "executable": false
+        },
+        {
+          "path": "plugin.json",
+          "sha256": "16171aff885970e61f093881320040debfebd78d454efa7e033e978d6e4c35c3",
+          "executable": false
+        },
+        {
+          "path": "references/conventions-question-bank.md",
+          "sha256": "19720e73e21d3d0d4ee2a8029bbe0c413340a422bf9232899eb3d653505edc50",
+          "executable": false
+        },
+        {
+          "path": "references/engineering-config.md",
+          "sha256": "0af9a1a0fa0d0899c5b2f95d51b0585adfb5969ba13388b3ae25b3aeb3d28821",
+          "executable": false
+        },
+        {
+          "path": "references/environment-sync.md",
+          "sha256": "12d41a51b8be084a40fa0c9054d72c7713529c15afc9b79fb0f94817895f350e",
+          "executable": false
+        },
+        {
+          "path": "references/github-review-access.md",
+          "sha256": "d653c9f538ce434351853331c11154b743033aeb16a4762494900fb27eade510",
+          "executable": false
+        },
+        {
+          "path": "references/review-merge-gate.md",
+          "sha256": "df920b0ec10199e6e3d95c3fadcea82b66520678ca58fd7146fc2ad8ea9f2958",
+          "executable": false
+        },
+        {
+          "path": "references/spec-format.md",
+          "sha256": "b9c75917971104e3b75e904c22b194a93991211cda67f83c927db99c144346d5",
+          "executable": false
+        },
+        {
+          "path": "references/ux-journey-design.md",
+          "sha256": "16bbd0d68b1c41f56b450865f3609bf228c14e69f1a37684badcaee87d72a787",
+          "executable": false
+        },
+        {
+          "path": "skills/ask-questions/SKILL.md",
+          "sha256": "0cd01504216f353feb09815289010c1ccba874d5232d1af4166418291686452e",
+          "executable": false
+        },
+        {
+          "path": "skills/ask-questions/agents/openai.yaml",
+          "sha256": "c33466324ea3b78d5c13ce393e05b49c579909209fb182ab150f34628bf0ec47",
+          "executable": false
+        },
+        {
+          "path": "skills/ask-questions/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/author-implementation-plan/SKILL.md",
+          "sha256": "918d3bdf9586905ed5efc9b0100b745ff33ee83b224deb16f2d65f2946096be4",
+          "executable": false
+        },
+        {
+          "path": "skills/author-implementation-plan/agents/openai.yaml",
+          "sha256": "0182a212f7f13c43568c6df89ee5c1e8a70888ee78f91c3c9bb5884959d29f91",
+          "executable": false
+        },
+        {
+          "path": "skills/author-implementation-plan/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/author-implementation-plan/examples.md",
+          "sha256": "ec65dbe51436f5445bc153f1b7143b775caff43f3895ac190f38e146ad790e2b",
+          "executable": false
+        },
+        {
+          "path": "skills/author-implementation-plan/template.md",
+          "sha256": "b052162797f6746a47bce66373b787474f8aa149b41838a33d5f722bbb6d0de9",
+          "executable": false
+        },
+        {
+          "path": "skills/branch-cleanup/SKILL.md",
+          "sha256": "be21e276fe1986e1628396962183a923a2182e36e8bfa9fa8333dfb56ebdf5af",
+          "executable": false
+        },
+        {
+          "path": "skills/branch-cleanup/agents/openai.yaml",
+          "sha256": "01732eec84fed8392ba220a7ebfafa059532e1694fece987e52d20413317b345",
+          "executable": false
+        },
+        {
+          "path": "skills/branch-cleanup/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/branch-cleanup/scripts/scan.py",
+          "sha256": "62d83acec90809cca82113723b1303d02b5934ffc27baed449c6be341d25c8aa",
+          "executable": true
+        },
+        {
+          "path": "skills/branch-self-review/SKILL.md",
+          "sha256": "28ad74cdef94c60220a8166ecc0e5911f30e9b3263a3dd38036918cfc612e90f",
+          "executable": false
+        },
+        {
+          "path": "skills/branch-self-review/agents/openai.yaml",
+          "sha256": "8c4079db24411007d5a42739698a04866ae0f1483df763cadd82b4d16d117b08",
+          "executable": false
+        },
+        {
+          "path": "skills/branch-self-review/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/bug-regression-red-green/SKILL.md",
+          "sha256": "d7f0dc73093b1b8ee800c158e173e05dae29f0ff03294536c66a01c5fb292d59",
+          "executable": false
+        },
+        {
+          "path": "skills/bug-regression-red-green/agents/openai.yaml",
+          "sha256": "b59119f4e6d0912c8beb90db026dc6a5c07bbd4191f43dfefaffc3fe05ab3b40",
+          "executable": false
+        },
+        {
+          "path": "skills/bug-regression-red-green/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/clean-code-slop/SKILL.md",
+          "sha256": "1e9508b72c7a0e3a5b372b030d83a47e2db7b95de30a9ae56176a5bce13d31a0",
+          "executable": false
+        },
+        {
+          "path": "skills/clean-code-slop/agents/openai.yaml",
+          "sha256": "b536377199edbcb26b34a447e89c413155223227a9cc960c18e5319e998262da",
+          "executable": false
+        },
+        {
+          "path": "skills/clean-code-slop/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-implement/SKILL.md",
+          "sha256": "bf6729100a6720b5c69786776f6f88ed2744de81249962c8663db75a199c1719",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-implement/agents/openai.yaml",
+          "sha256": "5b0df449c519497ef46ce4c832e56836380d6bb5289a22a5ec468358bc966ca2",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-implement/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-publish-resolve/SKILL.md",
+          "sha256": "286a8b0ce46c3086df9241cd5d99545a9dcd474b21b841176c87fac3c553ec55",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-publish-resolve/agents/openai.yaml",
+          "sha256": "2ed94877767cc2a653170415ba7dd7c1e71d759219fd060be086d341c841d0a2",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-publish-resolve/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-publish-resolve/github-communication.md",
+          "sha256": "624d95d73205561f658f90bad0a217c87ede958175a1ac12d0903f678b97906b",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-triage/SKILL.md",
+          "sha256": "881fc79243063f50945c8762b4a056a0335b43a2ad637d6698f7db38696ba63b",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-triage/agents/openai.yaml",
+          "sha256": "6663a3b009f469176a3bfa4474522fbf1d4a98e299788d63fca7dfdb32f390e8",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-triage/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/coderabbit-review-triage/output-templates.md",
+          "sha256": "0df8d313475d0f89340cf8659af76862a623ba920e0e140b02db4386f9d6b7d4",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-audit/SKILL.md",
+          "sha256": "86115b4d465b7242dfb0b944259ddf69b11acc69d34ea7f0faed7780c0d10e35",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-audit/agents/openai.yaml",
+          "sha256": "2e7a72a505f19249225b1b5ccc0131bd4d3d7e0ddf90d5473b0633f64d0b8e8b",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-audit/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-decide/SKILL.md",
+          "sha256": "94ad91074912d2e06f204dfbcfc572e5c9e3a0cd6789f6056f93c3c80dd4da21",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-decide/agents/openai.yaml",
+          "sha256": "98fc181706000660cd2fff8e7d4df6de7ad31be5d476a28e3eda96ff95d4195f",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-decide/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-migrate/SKILL.md",
+          "sha256": "b63e6033d87ad068b3992fa3a77c02ae995a735816a61363da41e2974a85e949",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-migrate/agents/openai.yaml",
+          "sha256": "594a7e86ebcfdce7e0ff7e217059db7ba9ba0cd95d3bcff540bf630544d99145",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-migrate/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-revisit/SKILL.md",
+          "sha256": "72b46d681271db588ba050cec276489dfa51edd428d31ebc91679ece8acc8733",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-revisit/agents/openai.yaml",
+          "sha256": "166b9a581290cb28cf2191b3fbef0968e9d755c46f86d179ac94f922f2d68b69",
+          "executable": false
+        },
+        {
+          "path": "skills/conventions-revisit/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/engineering-setup/SKILL.md",
+          "sha256": "c2e4554336c87607760271cd26829a20bcf667efe2cf0cbebf40537cdb1970db",
+          "executable": false
+        },
+        {
+          "path": "skills/engineering-setup/agents/openai.yaml",
+          "sha256": "51e59601158def0154650d43a86bdefcc15d280674eb4e9c28b392f7cd6a9a76",
+          "executable": false
+        },
+        {
+          "path": "skills/engineering-setup/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/linear-pr-link/SKILL.md",
+          "sha256": "727946441c1ddcc10ce7a83947c15a788aae7f47652d4046ca93235526074bae",
+          "executable": false
+        },
+        {
+          "path": "skills/linear-pr-link/agents/openai.yaml",
+          "sha256": "0fee690901e278458b4e793c32b54a944953f5eee0cc757c1870d5df328c244f",
+          "executable": false
+        },
+        {
+          "path": "skills/linear-pr-link/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/ready-for-pr/SKILL.md",
+          "sha256": "0cd53b4a2478443000742304636f4095bb56f7c4e77f5ead092504a080205ded",
+          "executable": false
+        },
+        {
+          "path": "skills/ready-for-pr/agents/openai.yaml",
+          "sha256": "9ebaaaa9b48e2a112cf134182815adb38c2a60e3fe20ba6ee7a5f33272584e33",
+          "executable": false
+        },
+        {
+          "path": "skills/ready-for-pr/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan/SKILL.md",
+          "sha256": "4077246c6872cb5a30a84ec2dcc892e7bd463246a5e8ef88956049a32fc0848b",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan/agents/openai.yaml",
+          "sha256": "ff1346178e08ec634855a069ddcd6a403a0e284e06215d87e23f6df54551a186",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-assess-coverage/SKILL.md",
+          "sha256": "8a9d4bc9c43d12742a47db7adad0e85cf5e1e71b10f295e21ad699e456f6636f",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-assess-coverage/agents/openai.yaml",
+          "sha256": "13bafc96e1fa1f6c86ad9e2d6b75f836b28cdff4b61746d2913968cd945c86c4",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-assess-coverage/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-audit-drift/SKILL.md",
+          "sha256": "20bad079a3d8ad3f0edb9de8436c35c5b331e6455acc7d22ff15b65be3fc1dcc",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-audit-drift/agents/openai.yaml",
+          "sha256": "55c026d089f2edd9eb20aa17e29c7659ece05cc2c3aeebecf7dd71f83d867ca5",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-audit-drift/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-from-impl/SKILL.md",
+          "sha256": "3da303a8a22542393acfe97aa784753bc4b564bb9573d8992b6f5e469c4fff4e",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-from-impl/agents/openai.yaml",
+          "sha256": "84ec7d1b808bb0be983dafc4595e383230e618f8d2684752e0d9c985f8505ba6",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-from-impl/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-greenfield/SKILL.md",
+          "sha256": "430690e746b40f4e8d60b933e1e5c3d1bba72199ea8ac6b7c95d441b1d73771d",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-greenfield/agents/openai.yaml",
+          "sha256": "c033a570d32337ce490a56b1f4149b10e2dff5db546cd9bbcb25bfd536b47882",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-greenfield/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-tests/SKILL.md",
+          "sha256": "2e4ff3c2b7528777d90815fb6e9683c19401a1d360b7d6c12ddde95f650ad362",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-tests/agents/openai.yaml",
+          "sha256": "62aa3d669e4f18d56a17f31aff7ae1b2f0f565f57373393f993130e7af3f09dd",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-author-tests/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-gap-sweep/SKILL.md",
+          "sha256": "e106ca1328e6e99924d15b02d4b2d941be8861ebd9b33dd9bd38011628d7b927",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-gap-sweep/agents/openai.yaml",
+          "sha256": "166d03605d212c5855498e929f426c6d9ba992488c46b9355ba83bd580fffad8",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-gap-sweep/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-harvest-discussion/SKILL.md",
+          "sha256": "09ed0344d513fdae2633c712b4fa7c0eecf63231a153493f2b8cc07ae5d1455b",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-harvest-discussion/agents/openai.yaml",
+          "sha256": "50e99ad5945e44f6ec85921ef896043b0cbb18d5d64bc06f2749330dabf8e983",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-harvest-discussion/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-maintain-on-ship/SKILL.md",
+          "sha256": "1e963ae578efba6f54ba4f13534ce7594f2cc636886aa69679e8fe549fd43830",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-maintain-on-ship/agents/openai.yaml",
+          "sha256": "b0ebfc0a1f837add92ae480029c90b82a8d729f64ba2327c8f4055dfcc28fcb3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-maintain-on-ship/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-plan-gap/SKILL.md",
+          "sha256": "48c23e462919aef2c9c1ebf3be0c52173a1a6bdde84a0e1cf693d9b732a016b1",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-plan-gap/agents/openai.yaml",
+          "sha256": "bdc7d55911e5445210a23b817886434bba7802aaf41ef16048c9ecb5a3514893",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-plan-gap/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-storyboard-journey/SKILL.md",
+          "sha256": "b3a449fe252320ea05d22a562d76c192806034643e13778f77a462be802db2bb",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-storyboard-journey/agents/openai.yaml",
+          "sha256": "08916054cc2808f2c07b7e2b0de9e0a799761032f046a3b1139c4ac2419e91b2",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-storyboard-journey/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-triage-bug-report/SKILL.md",
+          "sha256": "31737c31502b5c1e313d5a4f891252f49c473cd487dee5eae57364e4747d235f",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-triage-bug-report/agents/openai.yaml",
+          "sha256": "845ec7141fcf75a26a571ca3a39675c92fee1fecaa930646f8b819c755b5f613",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-triage-bug-report/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-visualize/SKILL.md",
+          "sha256": "e49326a88029227b1090e6c02e7276d3654f625828d82f5def67db973bf7df5e",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-visualize/agents/openai.yaml",
+          "sha256": "9b02fad8831350d71b53cca56157c7f3718ff43d90ddd39196bca4a874806d5d",
+          "executable": false
+        },
+        {
+          "path": "skills/spec-visualize/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/update-pr/SKILL.md",
+          "sha256": "79e9cc86d2e916336e0f4b8fe28f94cdb6328edea4534c8213d73af5af4b3130",
+          "executable": false
+        },
+        {
+          "path": "skills/update-pr/agents/openai.yaml",
+          "sha256": "133d69eca68a521362ec25e500238e4a285c2628a12686b94241d0e9ba7631e8",
+          "executable": false
+        },
+        {
+          "path": "skills/update-pr/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/write-tests/SKILL.md",
+          "sha256": "bee6adaaece59708fc9c842dcb900f1a55bcb6e74d260b59fd1e7b1c14eca59c",
+          "executable": false
+        },
+        {
+          "path": "skills/write-tests/agents/openai.yaml",
+          "sha256": "3cf14adfb61d344434bcdbfb457a944737abe109cc06b69f05eef7d5084be752",
+          "executable": false
+        },
+        {
+          "path": "skills/write-tests/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        }
+      ]
+    },
+    {
+      "name": "calm-connect",
+      "repository": "calmtechltd/calm-connect",
+      "ref": "main",
+      "commit": "93cfdc8f91846798e3ef1d13d4d0630ea1cf47af",
+      "version": "1.0.1",
+      "files": [
+        {
+          "path": ".claude-plugin/plugin.json",
+          "sha256": "152f8fe9dc84ab580743ae273b3caa2efceca3635d00cf5744e9a0a6ac956cfd",
+          "executable": false
+        },
+        {
+          "path": ".codex-plugin/plugin.json",
+          "sha256": "5a6292426a675735e8810f34278667eca218120c0ed4da029f7c4bb230ef19af",
+          "executable": false
+        },
+        {
+          "path": ".mcp.json",
+          "sha256": "8504d8c8fc006e1382bc679f3e48d2af0e4db053bfca14018d20447951de0b07",
+          "executable": false
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "a08360414564f1a8b06c1b50c63d27cb6c5fdcd35489ceb0c25d5999201c093f",
+          "executable": false
+        },
+        {
+          "path": "LICENSE",
+          "sha256": "21b35a664b061ff08a4c388de6c961564578f34d996a5e74ac18107d01e308cf",
+          "executable": false
+        },
+        {
+          "path": "README.md",
+          "sha256": "1c1be146655f65042a13da771cf40c3bdfd2f005ba3f950002f8a2392d747f77",
+          "executable": false
+        },
+        {
+          "path": "SECURITY.md",
+          "sha256": "6a47ede44516811db7cba8858e97e729eb36601b7ddbbe29192bd8d7c530851c",
+          "executable": false
+        },
+        {
+          "path": "assets/calm-connect-icon.png",
+          "sha256": "830cd78f7cd06613de725229194ac46f2d4f3fb16a140036326ba69c8a07577f",
+          "executable": false
+        },
+        {
+          "path": "mcp.json",
+          "sha256": "f0295d962278d71a1cc9c589d0efb3665af2e47771d22c8eba98f3990633a18e",
+          "executable": false
+        },
+        {
+          "path": "plugin.json",
+          "sha256": "bf1ed89becefa88e75c538a99b28354ec82b17081aa743050966e72b248f4786",
+          "executable": false
+        }
+      ]
+    }
+  ]
+}

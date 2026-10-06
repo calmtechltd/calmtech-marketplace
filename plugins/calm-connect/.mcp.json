@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "calm": {
+      "type": "http",
+      "url": "https://app.calmcompliance.com/mcp"
+    }
+  }
+}
