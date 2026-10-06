@@ -34,7 +34,7 @@ export function validateRegistry({ plugins }) {
   return plugins;
 }
 
-export async function inventory(root) {
+export async function inventory(root, executableModes) {
   const files = [];
   async function visit(path) {
     const metadata = await lstat(path);
@@ -43,10 +43,12 @@ export async function inventory(root) {
       for (const entry of (await readdir(path)).sort()) await visit(join(path, entry));
     } else {
       assert(metadata.isFile(), `Unsupported package file: ${path}`);
+      const name = relative(root, path).split("\\").join("/");
+      if (executableModes) assert(executableModes.has(name), `Package file is not tracked in the source Git tree: ${name}`);
       files.push({
-        path: relative(root, path).split("\\").join("/"),
+        path: name,
         sha256: createHash("sha256").update(await readFile(path)).digest("hex"),
-        executable: Boolean(metadata.mode & 0o111),
+        executable: executableModes ? executableModes.get(name) : Boolean(metadata.mode & 0o111),
       });
     }
   }

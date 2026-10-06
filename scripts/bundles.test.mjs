@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { chmod, cp, mkdir, mkdtemp, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { chmod, cp, mkdir, mkdtemp, readFile, readdir, rm, symlink, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import test from "node:test";
@@ -33,9 +33,10 @@ async function fixture(t) {
   await mkdir(join(marketplace, "scripts"), { recursive: true });
   for (const name of ["bundles.mjs", "generate.mjs", "validate.mjs"]) await cp(join(scripts, name), join(marketplace, "scripts", name));
   await writeFile(join(marketplace, "plugins.json"), json({ plugins: [plugin] }));
-  const run = (script, ...args) => spawnSync(process.execPath, [join(marketplace, "scripts", script), ...args], { encoding: "utf8", env: { ...process.env, CALMTECH_SOURCE_ROOT: join(root, "sources") } });
+  const runWithEnv = (env, script, ...args) => spawnSync(process.execPath, [join(marketplace, "scripts", script), ...args], { encoding: "utf8", env: { ...process.env, CALMTECH_SOURCE_ROOT: join(root, "sources"), ...env } });
+  const run = (script, ...args) => runWithEnv({}, script, ...args);
   const ok = (script, ...args) => { const result = run(script, ...args); assert.equal(result.status, 0, result.stderr); return result; };
-  return { root, source, marketplace, file, git, commit, initial, run, ok };
+  return { root, source, marketplace, file, git, commit, initial, run, runWithEnv, ok };
 }
 
 test("refresh preserves source bytes/modes, and locked generation ignores later commits", async (t) => {
@@ -106,4 +107,56 @@ test("registry rejects unsafe include paths and duplicate entries", () => {
   for (const path of ["../secret", "assets/../../secret", ".", ".git", "/absolute", "assets\\file", "assets//file"]) assert.throws(() => safeRelativePath(path));
   assert.throws(() => validateRegistry({ plugins: [plugin, plugin] }));
   assert.throws(() => validateRegistry({ plugins: [{ ...plugin, include: [...plugin.include, "assets/icon.png"] }] }));
+});
+
+test("refresh can publish when OS temp storage is on a different filesystem", async (t) => {
+  const f = await fixture(t);
+  f.ok("generate.mjs", "--refresh");
+  await f.file("assets/icon.png", Buffer.from([7, 8, 9]));
+  f.commit();
+  const hook = join(f.root, "cross-device.mjs");
+  await writeFile(hook, `import fs from "node:fs/promises";
+import { syncBuiltinESMExports } from "node:module";
+import { sep } from "node:path";
+const rename = fs.rename;
+fs.rename = async (from, to) => {
+  if (!(await fs.realpath(from)).startsWith(await fs.realpath(process.env.BUNDLE_TEST_REPOSITORY) + sep)) {
+    throw Object.assign(new Error("Cross-device rename"), { code: "EXDEV" });
+  }
+  return rename(from, to);
+};
+syncBuiltinESMExports();
+`);
+  const result = f.runWithEnv({ NODE_OPTIONS: `--import=${hook}`, BUNDLE_TEST_REPOSITORY: f.marketplace }, "generate.mjs", "--refresh");
+  assert.equal(result.status, 0, result.stderr);
+  assert.deepEqual(await readFile(join(f.marketplace, "plugins/sample/assets/icon.png")), Buffer.from([7, 8, 9]));
+  f.ok("validate.mjs");
+  assert(!(await readdir(f.marketplace)).some(name => name.startsWith(".calmtech-bundles-")));
+});
+
+test("locked executable flags reproduce Git modes on filesystems without POSIX permissions", async (t) => {
+  const f = await fixture(t);
+  f.ok("generate.mjs", "--refresh");
+  const lock = await readFile(join(f.marketplace, "plugins.lock.json"), "utf8");
+  const hook = join(f.root, "no-posix-modes.mjs");
+  await writeFile(hook, `import fs from "node:fs/promises";
+import { syncBuiltinESMExports } from "node:module";
+const lstat = fs.lstat;
+fs.lstat = async (...args) => {
+  const result = await lstat(...args);
+  if (result.isFile()) result.mode = typeof result.mode === "bigint" ? result.mode & ~0o111n : result.mode & ~0o111;
+  return result;
+};
+syncBuiltinESMExports();
+`);
+  const result = f.runWithEnv({ NODE_OPTIONS: `--import=${hook}` }, "generate.mjs");
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(await readFile(join(f.marketplace, "plugins.lock.json"), "utf8"), lock);
+  const git = (...args) => execFileSync("git", ["-C", f.marketplace, ...args], { encoding: "utf8" });
+  git("init", "-q");
+  git("config", "core.filemode", "false");
+  await chmod(join(f.marketplace, "plugins/sample/skills/sample/run.sh"), 0o644);
+  f.ok("validate.mjs");
+  await writeFile(join(f.marketplace, "plugins/sample/assets/icon.png"), "changed");
+  assert.notEqual(f.run("validate.mjs").status, 0, "Non-POSIX validation must still detect byte changes");
 });

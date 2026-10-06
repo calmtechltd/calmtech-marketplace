@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { cp, lstat, mkdir, mkdtemp, rename, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { promisify } from "node:util";
 import { catalogs, inventory, json, readJson, safeRelativePath, validatePackage, validateRegistry } from "./bundles.mjs";
@@ -17,7 +16,7 @@ if (locked) {
   assert.equal(locked.version, 1);
   assert.deepEqual(locked.plugins.map(({ name }) => name), plugins.map(({ name }) => name));
 }
-const temporary = await mkdtemp(join(tmpdir(), "calmtech-bundles-"));
+const temporary = await mkdtemp(join(root, ".calmtech-bundles-"));
 const output = join(temporary, "output");
 const manifests = [];
 const records = [];
@@ -40,6 +39,11 @@ try {
     await git(["-C", source, "checkout", "--quiet", "--detach", "FETCH_HEAD"]);
     const commit = await git(["-C", source, "rev-parse", "HEAD"]);
     assert(/^[0-9a-f]{40}$/u.test(commit), "Invalid resolved source commit.");
+    // Git records executable intent even when the host filesystem cannot represent it.
+    const executableModes = new Map((await git(["-C", source, "ls-tree", "-r", "-z", "HEAD"])).split("\0").filter(Boolean).map(entry => {
+      const separator = entry.indexOf("\t");
+      return [entry.slice(separator + 1), entry.startsWith("100755 ")];
+    }));
     const destination = join(output, "plugins", plugin.name);
     await mkdir(destination, { recursive: true });
     for (const included of plugin.include) {
@@ -54,7 +58,7 @@ try {
     }
     const manifest = await validatePackage(destination, plugin);
     manifests.push(manifest);
-    const record = { name: plugin.name, repository: plugin.repository, ref: plugin.ref, commit, version: manifest.version, files: await inventory(destination) };
+    const record = { name: plugin.name, repository: plugin.repository, ref: plugin.ref, commit, version: manifest.version, files: await inventory(destination, executableModes) };
     if (previous) assert.deepEqual(record, previous, `Locked bundle changed for ${plugin.name}; use npm run refresh for intentional changes.`);
     records.push(record);
   }

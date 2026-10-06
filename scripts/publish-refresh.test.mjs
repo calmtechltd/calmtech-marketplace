@@ -22,7 +22,10 @@ else if (args[0] === 'pr' && args[1] === 'create') {
  const pr = { number: state.prs.length + 1, state: 'OPEN', url: 'https://github.com/example/marketplace/pull/' + (state.prs.length + 1), headRefName: flag('--head'), author: { login: 'app/github-actions' } };
  state.prs.push(pr); output = pr.url;
 }
-else if (args[0] === 'pr' && args[1] === 'close') state.prs.find(p => p.number === Number(args[2])).state = 'CLOSED';
+else if (args[0] === 'pr' && args[1] === 'close') {
+ if (state.failClose) { state.failClose = false; fs.writeFileSync(path, JSON.stringify(state)); process.exit(1); }
+ state.prs.find(p => p.number === Number(args[2])).state = 'CLOSED';
+}
 else if (args[0] === 'workflow') {
  if (state.failDispatch) { state.failDispatch = false; fs.writeFileSync(path, JSON.stringify(state)); process.exit(1); }
  state.checked = true;
@@ -82,15 +85,54 @@ test("publisher opens and checks a snapshot, retiring only older automation PRs"
   assert(body.includes("does not merge PRs"));
 });
 
-test("publisher recovers a pushed branch after PR creation failed without rewriting history", async (t) => {
+test("publisher recovers a pushed branch after PR creation failed and the base advances without rewriting history", async (t) => {
   const f = await fixture(t, { failCreate: true });
   await f.changed(); assert.notEqual(f.run().status, 0);
   const firstBranch = f.git("branch", "--show-current");
   const pushed = f.git("ls-remote", "--heads", "origin", `refs/heads/${firstBranch}`).split(/\s/u)[0];
-  f.git("switch", "main"); await f.changed();
+  f.git("switch", "main");
+  await writeFile(join(f.checkout, "README.md"), "Unrelated base change");
+  f.git("add", "README.md");
+  f.git("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-qm", "Advance base");
+  f.git("push", "-q", "origin", "main");
+  await f.changed();
   const result = f.run(); assert.equal(result.status, 0, result.stderr);
   assert.equal(f.git("ls-remote", "--heads", "origin", `refs/heads/${firstBranch}`).split(/\s/u)[0], pushed);
   assert.equal((await f.state()).prs.length, 1);
+});
+
+test("publisher refuses a pushed branch whose generated files no longer match", async (t) => {
+  const f = await fixture(t, { failCreate: true });
+  await f.changed(); assert.notEqual(f.run().status, 0);
+  const branch = f.git("branch", "--show-current");
+  await writeFile(join(f.checkout, "plugins/sample/icon"), "Different bundle");
+  f.git("add", "plugins/sample/icon");
+  f.git("-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "-qm", "Change bundle");
+  f.git("push", "-q", "origin", branch);
+  const pushed = f.git("rev-parse", "HEAD");
+  f.git("switch", "main"); await f.changed();
+  assert.notEqual(f.run().status, 0);
+  assert.equal((await f.state()).prs.length, 0);
+  assert.equal(f.git("ls-remote", "--heads", "origin", `refs/heads/${branch}`).split(/\s/u)[0], pushed);
+});
+
+test("publisher retries retiring older automation PRs after a close fails", async (t) => {
+  const f = await fixture(t, { failClose: true, prs: [
+    { number: 1, state: "OPEN", headRefName: "codex-gaz/plugin-bundle-refresh-old", author: { login: "app/github-actions" } },
+    { number: 2, state: "OPEN", headRefName: "codex-gaz/plugin-bundle-refresh-human", author: { login: "human" } },
+  ] });
+  await f.changed(); assert.notEqual(f.run().status, 0);
+  const failed = await f.state();
+  assert.equal(failed.prs[0].state, "OPEN"); assert.equal(failed.prs[2].state, "OPEN");
+  f.git("switch", "main"); await f.changed();
+  const result = f.run(); assert.equal(result.status, 0, result.stderr);
+  const retried = await f.state(); assert.equal(retried.prs.length, 3);
+  assert.equal(retried.prs[0].state, "CLOSED"); assert.equal(retried.prs[1].state, "OPEN"); assert.equal(retried.prs[2].state, "OPEN");
+  retried.prs[0].state = "OPEN"; retried.prs[2].state = "CLOSED";
+  await writeFile(f.statePath, json(retried));
+  const closed = f.run(); assert.equal(closed.status, 0, closed.stderr);
+  const final = await f.state();
+  assert.equal(final.prs[0].state, "OPEN"); assert.equal(final.prs[2].state, "CLOSED");
 });
 
 test("publisher retries missing CI for an existing PR instead of making a duplicate", async (t) => {

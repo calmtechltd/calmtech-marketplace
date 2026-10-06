@@ -23,6 +23,7 @@ if (!diff) {
   const prefix = "codex-gaz/plugin-bundle-refresh-";
   const branch = `${prefix}${createHash("sha256").update(diff).digest("hex").slice(0, 16)}`;
   const existing = JSON.parse(await run("gh", ["pr", "list", "--repo", repo, "--base", base, "--head", branch, "--state", "all", "--json", "number,state,url"]));
+  let openRefresh = false;
   if (existing.length) {
     // Do not overwrite an open refresh or reopen a refresh somebody deliberately closed.
     process.stdout.write(`Refresh already proposed: ${existing[0].url} (${existing[0].state}).\n`);
@@ -31,13 +32,15 @@ if (!diff) {
       if (!checks.statusCheckRollup.some((check) => check.name === "validate" && check.conclusion === "SUCCESS")) {
         await run("gh", ["workflow", "run", "validate.yml", "--repo", repo, "--ref", branch]);
       }
+      openRefresh = true;
     }
   } else {
     const remote = await run("git", ["ls-remote", "--heads", "origin", `refs/heads/${branch}`]);
     if (remote) {
       // Recover if an earlier run pushed the branch but failed before opening its PR.
       await run("git", ["fetch", "origin", `refs/heads/${branch}`]);
-      assert.equal(await run("git", ["write-tree"]), await run("git", ["rev-parse", "FETCH_HEAD^{tree}"]), "Existing refresh branch differs; refusing to overwrite it.");
+      // Unrelated base commits may differ; the generated snapshot must still match.
+      assert.equal(await run("git", ["diff", "--cached", "--raw", "--no-abbrev", "FETCH_HEAD", "--", ...generated]), "", "Existing refresh branch differs; refusing to overwrite it.");
     } else {
       await run("git", ["switch", "--create", branch]);
       await run("git", ["-c", "user.name=github-actions[bot]", "-c", "user.email=41898282+github-actions[bot]@users.noreply.github.com", "commit", "-m", "Refresh generated plugin bundles"]);
@@ -54,6 +57,9 @@ if (!diff) {
     process.stdout.write(`Opened ${url}\n`);
     // GITHUB_TOKEN-created PRs do not start unattended PR checks. Dispatch explicitly.
     await run("gh", ["workflow", "run", "validate.yml", "--repo", repo, "--ref", branch]);
+    openRefresh = true;
+  }
+  if (openRefresh) {
     const open = JSON.parse(await run("gh", ["pr", "list", "--repo", repo, "--base", base, "--state", "open", "--json", "number,headRefName,author"]));
     for (const pr of open) {
       if (pr.headRefName !== branch && pr.headRefName.startsWith(prefix) && pr.author.login === "app/github-actions") {
