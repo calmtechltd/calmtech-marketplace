@@ -49,7 +49,7 @@ if (!diff) {
     }
     const lock = await readJson(join(root, "plugins.lock.json"));
     const sources = lock.plugins.map(({ name, version, repository, commit }) => `- ${name} ${version}: https://github.com/${repository}/commit/${commit}`).join("\n");
-    const body = `Refresh the generated marketplace bundles from their configured source repositories.\n\n${sources}\n\nThe refresh action passed the generator tests, bundle integrity and branding validation before publication. A separate validation run reproduces these exact locked commits. Merge this PR to publish the update; the action does not merge PRs.\n\nSource code, documentation and branding remain maintained in the plugin repositories. Do not edit the generated bundles or lock by hand.`;
+    const body = `Refresh the generated marketplace bundles from their configured source repositories.\n\n${sources}\n\nThe refresh action passed the generator tests, bundle integrity and branding validation before publication. A separate validation run reproduces these exact locked commits. The publisher does not merge PRs directly: a successful validation run automatically merges this versioned bundle-only refresh at its validated head.\n\nSource code, documentation and branding remain maintained in the plugin repositories. Do not edit the generated bundles or lock by hand.`;
     const { writeFile } = await import("node:fs/promises");
     const bodyPath = join(process.env.RUNNER_TEMP, "plugin-bundle-refresh-body.md");
     await writeFile(bodyPath, body);
