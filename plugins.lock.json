@@ -5,7 +5,7 @@
       "name": "calm-craft",
       "repository": "calmtechltd/calm-craft",
       "ref": "main",
-      "commit": "ad5bb59750d4a094428aee1441f89a48d40a88e9",
+      "commit": "6b6939023979b1d35e7b4f9c450bdf91b25aeded",
       "version": "0.4.3",
       "files": [
         {
@@ -30,7 +30,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "bec815eb6d8bce94add7b59157c7e249167fa40ee3e27efcee85d070e5af95bc",
+          "sha256": "8b4840c3702cfac9f2942f3408d21b1577f8ccadc1fa79d566ba4b3c3f157520",
           "executable": false
         },
         {
@@ -375,7 +375,7 @@
         },
         {
           "path": "skills/run-implementation-plan/SKILL.md",
-          "sha256": "4077246c6872cb5a30a84ec2dcc892e7bd463246a5e8ef88956049a32fc0848b",
+          "sha256": "7fc005dcc1690044213bbd792cd6c7e7d331c116d0e61a242fc2e8cbd939222a",
           "executable": false
         },
         {
@@ -385,6 +385,21 @@
         },
         {
           "path": "skills/run-implementation-plan/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan-all/SKILL.md",
+          "sha256": "26ca5b71d94d946aa5a56016f67ebf4fdc308e719094bc74ef5e53218b8c29b3",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan-all/agents/openai.yaml",
+          "sha256": "d1c6779c8457c9ea0d1509a390a2a1f77eb4cca568b72fb9da3e3a7b21723036",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan-all/assets/calm-craft-icon.png",
           "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
           "executable": false
         },
