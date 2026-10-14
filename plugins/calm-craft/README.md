@@ -2,11 +2,12 @@
 
 Free and open source, from [Calm Tech Ltd](https://github.com/calmtechltd). MIT licensed — use it, change it, ship it commercially. We want nothing for it.
 
-An [Agent Plugin](https://agent-plugins.org/) providing three things that make coding agents produce work you can trust:
+An [Agent Plugin](https://agent-plugins.org/) providing four things that make coding agents produce work you can trust:
 
 1. **Specs** — the product's intent, written down in an addressable form, so an agent has a source of truth that doesn't move.
 2. **A delivery loop** — design → chunked plan → one chunk per pass, looped until the plan is done → gates → self-review.
 3. **Conventions** — decided once, enforced by lint where a machine can enforce them, ambient where it can't.
+4. **Coding contracts** — explicitly invoked discovery, spec-driven design, implementation and audit of code boundaries and structure.
 
 Portable by design: skills live in `skills/` per the Agent Plugins v1 spec, so this works in Codex, Cursor, VS Code, Copilot, and anything else implementing the standard. `.claude-plugin/` sits alongside for Claude Code, which uses its own manifest location; both read the same skills.
 
@@ -36,8 +37,8 @@ To exercise only the source CLI against the last built browser bundle, use `pnpm
 CalmCraft supports the Node.js 22 and Node.js 24 LTS lines. Run a pinned version without installing it globally:
 
 ```sh
-npx --yes @calmcraft/cli@0.4.3 generate
-npx --yes @calmcraft/cli@0.4.3 generate --diff --base origin/main
+npx --yes @calmcraft/cli@0.3.1 generate
+npx --yes @calmcraft/cli@0.3.1 generate --diff --base origin/main
 ```
 
 `generate` writes one HTML file and opens it from disk. `--diff` bakes Branch Review into that file from the current working tree; there is no port, token, or process left running.
@@ -45,7 +46,7 @@ npx --yes @calmcraft/cli@0.4.3 generate --diff --base origin/main
 Or install the same pinned version:
 
 ```sh
-npm install --global @calmcraft/cli@0.4.3
+npm install --global @calmcraft/cli@0.3.1
 calmcraft view
 ```
 
@@ -165,6 +166,19 @@ That indirection is the point. Skills stay portable and updatable; your repo's s
 | ------------------- | --------------------------------------------------------------------------------------------- |
 | `engineering-setup` | Detect the toolchain, interview, write `.engineering/config.yaml` and `AGENTS.md`. Run first. |
 
+### Coding contracts — explicit trial
+
+Invoke these skills by name while the contract layer is being trialled. They apply to libraries, applications, tools and services. The [short contract guide](references/coding-contracts.md) defaults to responsibility/authority, API guarantees, desired structure and checks. Contracts link canonical specs/API requirements and evidence; changed obligations need fresh verification. Implementation completion requires both behavior and boundary conformance; passing tests alone do not establish either uninspected boundaries or permission to bypass them.
+
+Load relevant [contract details](references/code-contract-details.md) for state, effects, compatibility or framework migration, and [architecture principles](references/architecture-principles.md) for consequential design choices. Small updates need no separate design document. Reviews across several capabilities include relationship diagrams, with flows and current/proposed code trees where helpful. These skills do not run automatically, and the CLI/visualizer does not yet parse contracts.
+
+| Skill                     | Job                                                                                                                |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `code-contract-discover`  | Map existing or proposed capabilities and identify evidence-backed boundary gaps. Reports; does not refactor.      |
+| `code-contract-design`    | Propose/update contract specs and desired structure from specs, code and existing framework choices.               |
+| `code-contract-audit`     | Check selected code against its contracts; distinguish violations, target gaps and missing evidence. Reports only. |
+| `code-contract-implement` | Build missing code or adapt existing code for selected contracts, then verify the required behavior.               |
+
 ### Conventions
 
 | Skill                 | Job                                                                                       |
@@ -199,6 +213,7 @@ That indirection is the point. Skills stay portable and updatable; your repo's s
 | `author-implementation-plan`        | Design doc → chunks sized for one reviewable pass.                                                 |
 | `ask-questions`                     | Surface open decisions in current work and ask them, structured.                                   |
 | `run-implementation-plan`           | Implement one chunk by default; explicitly finish the selected plan or run it in a host goal.      |
+| `run-implementation-plan-all`       | Create or continue a host goal to finish the selected plan, verifying one chunk at a time.         |
 | `bug-regression-red-green`          | Reproduce the failure, fix it, and preserve meaningful regression protection.                      |
 | `branch-self-review`                | Review your own diff before anyone else does. Reports; never fixes.                                |
 | `clean-code-slop`                   | Explicitly requested audit or cleanup of unjustified complexity, duplication, and low-value tests. |
@@ -209,7 +224,7 @@ That indirection is the point. Skills stay portable and updatable; your repo's s
 | `coderabbit-review-implement`       | Apply triaged bot and human review fixes locally. No commit, push, or resolve.                     |
 | `coderabbit-review-publish-resolve` | Triage → fix → verify → commit → publish → reply and resolve, in one invocation.                   |
 
-`run-implementation-plan-all` has been merged into `run-implementation-plan`. Use `$run-implementation-plan` for the next chunk, `$run-implementation-plan finish the selected plan` for the remaining delivery scope, or explicitly request a host goal. Each mode verifies and records one chunk before starting the next.
+Use `$run-implementation-plan` for the next chunk, `$run-implementation-plan finish the selected plan` for the remaining delivery scope in the current session, or `$run-implementation-plan-all` to create or continue a host goal and finish that scope across turns. The all-mode default prompt explicitly requests the goal, and the skill sets it up before implementation. Each mode verifies and records one chunk before starting the next.
 
 The review skills preserve Ben's triage rules, nitpick bundling, implementation priorities, skip explanations, and single fixes-and-skips summary. `coderabbit-review-publish-resolve` replaces the confusing `coderabbit-review-implement-all` name: triage assesses the feedback, implement applies local fixes, and publish-and-resolve publishes them before GitHub communication. The workflows cover CodeRabbit, Codex, and human reviewers. [GitHub review access](references/github-review-access.md) documents the desktop/cloud transport fixes, including GraphQL thread replies and resolution and restricted tokens that cannot post a top-level summary.
 
