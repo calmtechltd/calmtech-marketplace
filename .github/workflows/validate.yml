@@ -25,7 +25,7 @@ jobs:
 
   publish-handoff:
     needs: validate
-    if: github.event_name == 'workflow_dispatch' && startsWith(github.ref_name, 'codex-gaz/plugin-bundle-refresh-')
+    if: github.event_name == 'workflow_dispatch' && github.actor == 'github-actions[bot]' && github.triggering_actor == 'github-actions[bot]' && startsWith(github.ref_name, 'codex-gaz/plugin-bundle-refresh-')
     runs-on: ubuntu-latest
     permissions:
       actions: write
