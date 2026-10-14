@@ -5,22 +5,22 @@
       "name": "calm-craft",
       "repository": "calmtechltd/calm-craft",
       "ref": "main",
-      "commit": "ad5bb59750d4a094428aee1441f89a48d40a88e9",
-      "version": "0.4.3",
+      "commit": "8585c57781beccb531d0d383da9f58475a320b3e",
+      "version": "0.4.4",
       "files": [
         {
           "path": ".claude-plugin/plugin.json",
-          "sha256": "7d2263bb99752b0b364399a54e65e2b9703df05b37fb582c91a37fd71400f07f",
+          "sha256": "1a0cb063a574202d3ac4879b2408b5b53eb4b7b0ed27708e523d844f14480aca",
           "executable": false
         },
         {
           "path": ".codex-plugin/plugin.json",
-          "sha256": "a493c2f1f53adc8ddcf87db4ded242e4325a5b9dff5a4e7a00ebad223fdda662",
+          "sha256": "f3c01da05ed04f297c38bc758a26c0d5d3a89c9df9c3ebc43383eb730b32234e",
           "executable": false
         },
         {
           "path": "CHANGELOG.md",
-          "sha256": "72228d6f88aaed070b50e4f13fd87a40c1baf213345735c0686f10a0808c1d84",
+          "sha256": "8b459d25a6417f57cfd19c423be28437920c2ac6fff7ad01bf01dc9c4993a840",
           "executable": false
         },
         {
@@ -30,7 +30,7 @@
         },
         {
           "path": "README.md",
-          "sha256": "bec815eb6d8bce94add7b59157c7e249167fa40ee3e27efcee85d070e5af95bc",
+          "sha256": "a2e34c16122224746763f5f0b91ffb6a03c8141b9246c9f57518de05f6955e3d",
           "executable": false
         },
         {
@@ -70,7 +70,22 @@
         },
         {
           "path": "plugin.json",
-          "sha256": "16171aff885970e61f093881320040debfebd78d454efa7e033e978d6e4c35c3",
+          "sha256": "11e1651a8afaba9f218fdf0f9b8fd5e94abb76afeaced7bd1f8fb4a75d7d4598",
+          "executable": false
+        },
+        {
+          "path": "references/architecture-principles.md",
+          "sha256": "6dd6a26fd5036c37026739e92045041968a4a5cd403590b884cf52a06ee73cea",
+          "executable": false
+        },
+        {
+          "path": "references/code-contract-details.md",
+          "sha256": "4c83385e73b9f61cf4bc7cea82f5327c78c77fbb0fe8411aa5307bb80e7d3d8b",
+          "executable": false
+        },
+        {
+          "path": "references/coding-contracts.md",
+          "sha256": "4e4d1a0e34cdea4acb9587f57bd93fba06187f1cf56945a9bf3dc1476e187f98",
           "executable": false
         },
         {
@@ -210,6 +225,66 @@
         },
         {
           "path": "skills/clean-code-slop/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-audit/SKILL.md",
+          "sha256": "419f173b0941836a76785bc5d490db0975a875abcbc5c9cc72480693f1161ab5",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-audit/agents/openai.yaml",
+          "sha256": "a1a3970908a90c9fc455bb3bbe6808b24abc253524ed3dc441d0647470b415ea",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-audit/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-design/SKILL.md",
+          "sha256": "ae282aa226d6bde3e18e43d5a00d0f19f709489497ae6fe3c94653b4c4197aff",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-design/agents/openai.yaml",
+          "sha256": "e8e154e769efeb3c7484f97330aadfbe120990a4aef46a4109f579901cf5a0f3",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-design/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-discover/SKILL.md",
+          "sha256": "3c1b403a94bee595167bc494eb5f5393b37b826474842a22256975327d53dfea",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-discover/agents/openai.yaml",
+          "sha256": "5640d172fdfb02b2cbe681708a56f9c36ce647f134db15f31624c1218e59ffb9",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-discover/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-implement/SKILL.md",
+          "sha256": "c619b4fd4ea4d68b53735dd2c4457cf65d1fc7b9aba92cdaf77f71d9a3e62f7d",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-implement/agents/openai.yaml",
+          "sha256": "9e06907eab380fb0f687be045f84a8f97d1b4d746d3af3a16d954fb4073297ad",
+          "executable": false
+        },
+        {
+          "path": "skills/code-contract-implement/assets/calm-craft-icon.png",
           "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
           "executable": false
         },
@@ -375,7 +450,7 @@
         },
         {
           "path": "skills/run-implementation-plan/SKILL.md",
-          "sha256": "4077246c6872cb5a30a84ec2dcc892e7bd463246a5e8ef88956049a32fc0848b",
+          "sha256": "7fc005dcc1690044213bbd792cd6c7e7d331c116d0e61a242fc2e8cbd939222a",
           "executable": false
         },
         {
@@ -385,6 +460,21 @@
         },
         {
           "path": "skills/run-implementation-plan/assets/calm-craft-icon.png",
+          "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan-all/SKILL.md",
+          "sha256": "26ca5b71d94d946aa5a56016f67ebf4fdc308e719094bc74ef5e53218b8c29b3",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan-all/agents/openai.yaml",
+          "sha256": "d1c6779c8457c9ea0d1509a390a2a1f77eb4cca568b72fb9da3e3a7b21723036",
+          "executable": false
+        },
+        {
+          "path": "skills/run-implementation-plan-all/assets/calm-craft-icon.png",
           "sha256": "d2afcc64066dd74a3dd903fddc659c4c0c63e037b7fca6d9cdc7e7bb48558aa3",
           "executable": false
         },
@@ -555,7 +645,7 @@
         },
         {
           "path": "skills/spec-visualize/SKILL.md",
-          "sha256": "e49326a88029227b1090e6c02e7276d3654f625828d82f5def67db973bf7df5e",
+          "sha256": "76cfb8fa1e60373ef40e4fd2c1e288e8b094fbae13d7f529502a5f720ee14e69",
           "executable": false
         },
         {
