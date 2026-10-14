@@ -5,22 +5,22 @@
       "name": "calm-craft",
       "repository": "calmtechltd/calm-craft",
       "ref": "main",
-      "commit": "8585c57781beccb531d0d383da9f58475a320b3e",
-      "version": "0.4.4",
+      "commit": "13c06381384a3166c778c39693949d4decb7e8d7",
+      "version": "0.4.5",
       "files": [
         {
           "path": ".claude-plugin/plugin.json",
-          "sha256": "1a0cb063a574202d3ac4879b2408b5b53eb4b7b0ed27708e523d844f14480aca",
+          "sha256": "3ffe21764ad8dfd0b4493eafaae83c5fd87ea9855a5fd14afc02f9b2cbb4fc3d",
           "executable": false
         },
         {
           "path": ".codex-plugin/plugin.json",
-          "sha256": "f3c01da05ed04f297c38bc758a26c0d5d3a89c9df9c3ebc43383eb730b32234e",
+          "sha256": "c04c7632cb73b6be64b8716033329f19125f2d7c62c431cf3184d7d885b139de",
           "executable": false
         },
         {
           "path": "CHANGELOG.md",
-          "sha256": "8b459d25a6417f57cfd19c423be28437920c2ac6fff7ad01bf01dc9c4993a840",
+          "sha256": "1617e0eb3c8d8aed4ec36e2c25f24a1978bfef412fdffe118c6c416e6ebca91f",
           "executable": false
         },
         {
@@ -70,7 +70,7 @@
         },
         {
           "path": "plugin.json",
-          "sha256": "11e1651a8afaba9f218fdf0f9b8fd5e94abb76afeaced7bd1f8fb4a75d7d4598",
+          "sha256": "ed0aceedb1aef58a799b3ad0aff04cc39a22bd07ccc6baae1faa0ff73ddcd9d4",
           "executable": false
         },
         {
