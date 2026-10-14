@@ -22,3 +22,17 @@ jobs:
       - run: npm run validate
       - run: npm run generate
       - run: git diff --exit-code
+
+  publish-handoff:
+    needs: validate
+    if: github.event_name == 'workflow_dispatch' && startsWith(github.ref_name, 'codex-gaz/plugin-bundle-refresh-')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      # GITHUB_TOKEN-dispatched validation does not emit the workflow_run handoff.
+      - run: gh workflow run publish-validated-refresh.yml --repo "$GH_REPO" --ref main -f validation_run_id="$VALIDATION_RUN_ID"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VALIDATION_RUN_ID: ${{ github.run_id }}

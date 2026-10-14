@@ -4,11 +4,18 @@ on:
   workflow_run:
     workflows: [Validate marketplace]
     types: [completed]
+  workflow_dispatch:
+    inputs:
+      validation_run_id:
+        description: Exact validation run to await and verify before publication
+        required: true
+        type: string
 
 permissions:
   contents: write
   pull-requests: write
   actions: read
+  checks: read
 
 concurrency:
   group: refresh-plugin-bundles
@@ -16,8 +23,9 @@ concurrency:
 
 jobs:
   publish:
-    if: github.event.workflow_run.conclusion == 'success' && startsWith(github.event.workflow_run.head_branch, 'codex-gaz/plugin-bundle-refresh-')
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && startsWith(github.event.workflow_run.head_branch, 'codex-gaz/plugin-bundle-refresh-'))
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v6
         with:
@@ -29,4 +37,4 @@ jobs:
       - run: node scripts/merge-refresh.mjs
         env:
           GH_TOKEN: ${{ github.token }}
-          VALIDATION_RUN_ID: ${{ github.event.workflow_run.id }}
+          VALIDATION_RUN_ID: ${{ inputs.validation_run_id || github.event.workflow_run.id }}

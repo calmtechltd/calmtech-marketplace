@@ -54,6 +54,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const execute = promisify(execFile);
   const gh = async (...args) =>
     (await execute("gh", args, { maxBuffer: 8 * 1024 * 1024 })).stdout.trim();
+  // Explicit dispatch can start publication before validation's final job exits.
+  // Wait for the complete run; a failed or cancelled run must never publish.
+  await gh("run", "watch", runId, "--repo", repo, "--exit-status", "--interval", "3");
   const run = JSON.parse(
     await gh(
       "run",
