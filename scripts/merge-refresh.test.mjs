@@ -74,8 +74,8 @@ else if (args[0] === 'api') output = { content: Buffer.from(JSON.stringify(args[
 else if (args[0] === 'pr' && args[1] === 'merge') {
   if (args[args.indexOf('--match-head-commit') + 1] !== state.pr.headRefOid) throw Error('Unpinned merge');
   state.merged = true;
+  fs.writeFileSync(process.env.TEST_REFRESH_STATE, JSON.stringify(state));
 } else throw Error('Unexpected command: ' + args);
-fs.writeFileSync(process.env.TEST_REFRESH_STATE, JSON.stringify(state));
 if (output) console.log(JSON.stringify(output));
 `,
   );
